@@ -4074,6 +4074,23 @@
   </div>
 
   <script>
+    // Verificar se está logado
+    window.addEventListener('load', function() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      const loginTime = localStorage.getItem('loginTime');
+      const currentTime = new Date().getTime();
+      
+      // Sessão válida por 24 horas
+      const sessionDuration = 24 * 60 * 60 * 1000;
+      
+      if (!isLoggedIn || !loginTime || (currentTime - loginTime >= sessionDuration)) {
+        // Não está logado ou sessão expirou
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('loginTime');
+        window.location.href = '../login.html';
+      }
+    });
+
     // Counter Animation
     function animateCounter(element, target, duration = 2000) {
       const start = 0;
