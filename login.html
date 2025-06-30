@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Comunicação</title>
+    <title>System Access - Login</title>
     <style>
         * {
             margin: 0;
@@ -12,8 +12,9 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Courier New', 'Monaco', monospace;
+            background: #000000;
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -21,160 +22,161 @@
         }
 
         .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            width: 100%;
+            background: #111111;
+            border: 2px solid #1e40af;
+            padding: 2rem;
             max-width: 400px;
+            width: 90%;
+        }
+
+        .system-header {
             text-align: center;
-        }
-
-        .login-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            color: #667eea;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 0.5rem;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        .subtitle {
-            color: #666;
             margin-bottom: 2rem;
-            font-size: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333333;
+        }
+
+        .system-title {
+            color: #1e40af;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .system-subtitle {
+            color: #666666;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
-            text-align: left;
         }
 
-        label {
+        .form-label {
             display: block;
-            color: #555;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
+            color: #cccccc;
             font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
         }
 
-        input[type="text"],
-        input[type="password"] {
+        .form-input {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
+            padding: 0.8rem;
+            background: #000000;
+            border: 1px solid #333333;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
         }
 
-        input[type="text"]:focus,
-        input[type="password"]:focus {
+        .form-input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #1e40af;
         }
 
-        .login-btn {
+        .login-button {
             width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            padding: 0.8rem;
+            background: #1e40af;
             border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
+            transition: background-color 0.3s ease;
         }
 
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        .login-button:hover {
+            background: #2563eb;
         }
 
-        .login-btn:active {
-            transform: translateY(0);
+        .login-button:active {
+            background: #1d4ed8;
         }
 
         .error-message {
-            background: #ffebee;
-            color: #c62828;
-            padding: 1rem;
-            border-radius: 10px;
+            background: #330000;
+            border: 1px solid #ff0000;
+            color: #ff6666;
+            padding: 0.8rem;
             margin-top: 1rem;
-            border-left: 4px solid #c62828;
+            font-size: 0.85rem;
             display: none;
         }
 
-        .loading {
+        .loading-state {
             display: none;
+            text-align: center;
+            color: #1e40af;
             margin-top: 1rem;
+            font-size: 0.9rem;
         }
 
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #667eea;
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: #1e40af;
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
 
         @media (max-width: 480px) {
             .login-container {
-                padding: 2rem;
+                padding: 1.5rem;
                 margin: 1rem;
-            }
-            
-            h1 {
-                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
+    <div class="status-indicator"></div>
+    
     <div class="login-container">
-        <div class="login-icon">🔐</div>
-        <h1>Acesso Restrito</h1>
-        <p class="subtitle">Digite suas credenciais para continuar</p>
+        <div class="system-header">
+            <div class="system-title">SYSTEM ACCESS</div>
+            <div class="system-subtitle">AUTHORIZED PERSONNEL ONLY</div>
+        </div>
         
         <form id="loginForm">
             <div class="form-group">
-                <label for="username">Usuário</label>
-                <input type="text" id="username" name="username" required>
+                <label class="form-label" for="username">USERNAME:</label>
+                <input type="text" id="username" name="username" class="form-input" required autocomplete="off">
             </div>
             
             <div class="form-group">
-                <label for="password">Senha</label>
-                <input type="password" id="password" name="password" required>
+                <label class="form-label" for="password">PASSWORD:</label>
+                <input type="password" id="password" name="password" class="form-input" required autocomplete="off">
             </div>
             
-            <button type="submit" class="login-btn">
-                Entrar
+            <button type="submit" class="login-button">
+                ACCESS SYSTEM
             </button>
         </form>
         
-        <div class="loading" id="loading">
-            <div class="loading-spinner"></div>
-            <p>Verificando credenciais...</p>
+        <div class="loading-state" id="loadingState">
+            <span class="loading-dots">AUTHENTICATING</span>
         </div>
         
         <div class="error-message" id="errorMessage">
-            Usuário ou senha incorretos. Tente novamente.
+            ACCESS DENIED - INVALID CREDENTIALS
         </div>
     </div>
 
@@ -185,45 +187,44 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
-            const loading = document.getElementById('loading');
+            const loadingState = document.getElementById('loadingState');
             const form = document.getElementById('loginForm');
             
-            // Mostrar loading
+            // Show loading state
             form.style.display = 'none';
-            loading.style.display = 'block';
+            loadingState.style.display = 'block';
             errorMessage.style.display = 'none';
             
-            // Simular delay de verificação
+            // Simulate authentication delay
             setTimeout(() => {
-                // Credenciais corretas
                 if (username === 'root' && password === '8us1aX#@sD2') {
-                    // Salvar estado de login
+                    // Valid credentials
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('loginTime', new Date().getTime());
                     
-                    // Redirecionar para a página principal
+                    // Redirect to main hub
                     window.location.href = 'main.html';
                 } else {
-                    // Credenciais incorretas
-                    loading.style.display = 'none';
+                    // Invalid credentials
+                    loadingState.style.display = 'none';
                     form.style.display = 'block';
                     errorMessage.style.display = 'block';
                     
-                    // Limpar campos
+                    // Clear form
                     document.getElementById('username').value = '';
                     document.getElementById('password').value = '';
                     document.getElementById('username').focus();
                 }
-            }, 1500);
+            }, 1200);
         });
         
-        // Verificar se já está logado
+        // Check if already logged in
         window.addEventListener('load', function() {
             const isLoggedIn = localStorage.getItem('isLoggedIn');
             const loginTime = localStorage.getItem('loginTime');
             const currentTime = new Date().getTime();
             
-            // Sessão válida por 24 horas
+            // Session valid for 24 hours
             const sessionDuration = 24 * 60 * 60 * 1000;
             
             if (isLoggedIn === 'true' && loginTime && (currentTime - loginTime < sessionDuration)) {
