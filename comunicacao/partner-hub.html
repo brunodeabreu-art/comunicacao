@@ -299,42 +299,38 @@
     
     /* Performance Indicators */
     .performance-indicators {
-      margin-top: 12px;
-      padding-top: 12px;
+      margin-top: 8px;
+      padding-top: 8px;
       border-top: 1px solid #e5e7eb;
     }
     .indicator-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
     .indicator-label {
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #6b7280;
       font-weight: 500;
-      min-width: 60px;
+      min-width: 45px;
     }
     .indicator-bar {
       display: flex;
-      gap: 2px;
+      gap: 1px;
       flex: 1;
-      margin-left: 8px;
+      margin-left: 6px;
     }
     .indicator-block {
-      width: 8px;
-      height: 8px;
-      border-radius: 2px;
+      width: 6px;
+      height: 6px;
+      border-radius: 1px;
       background: #e5e7eb;
     }
-    .indicator-block.active {
-      background: #3b82f6;
-    }
-    .indicator-block.gold-active {
-      background: #f59e0b;
-    }
+    .indicator-block.active,
+    .indicator-block.gold-active,
     .indicator-block.silver-active {
-      background: #64748b;
+      background: #10b981;
     }
 
     @media (max-width: 768px) {
@@ -1193,6 +1189,97 @@
         window.location.href = '../login.html';
       }
     });
+
+    // Auto-adicionar indicadores de performance para cards sem indicadores
+    document.addEventListener('DOMContentLoaded', function() {
+      const partnerCards = document.querySelectorAll('.partner-card');
+      
+      partnerCards.forEach(card => {
+        // Verifica se já tem indicadores
+        if (!card.querySelector('.performance-indicators')) {
+          const tier = card.querySelector('span').textContent.trim();
+          const indicators = createIndicators(tier);
+          card.appendChild(indicators);
+        }
+      });
+    });
+
+    function createIndicators(tier) {
+      const indicatorsDiv = document.createElement('div');
+      indicatorsDiv.className = 'performance-indicators';
+      
+      // Valores baseados no tier
+      let values;
+      switch(tier) {
+        case 'BLUE':
+          values = {
+            price: [0,0,1,1,1], // Alto preço
+            quality: [1,1,1,1,1], // Máxima qualidade
+            time: [0,1,1,1,1], // Bom tempo
+            availability: [0,0,1,1,1] // Média disponibilidade
+          };
+          break;
+        case 'GOLD':
+          values = {
+            price: [1,1,1,0,0], // Preço médio
+            quality: [1,1,1,1,0], // Alta qualidade
+            time: [1,1,1,1,0], // Bom tempo
+            availability: [1,1,1,1,1] // Alta disponibilidade
+          };
+          break;
+        case 'SILVER':
+          values = {
+            price: [1,1,0,0,0], // Baixo preço
+            quality: [1,1,1,0,0], // Qualidade média
+            time: [1,1,1,1,1], // Excelente tempo
+            availability: [1,1,1,1,1] // Máxima disponibilidade
+          };
+          break;
+        default:
+          values = {
+            price: [1,1,1,0,0],
+            quality: [1,1,1,0,0],
+            time: [1,1,1,0,0],
+            availability: [1,1,1,0,0]
+          };
+      }
+      
+      // Adicionar pequenas variações aleatórias
+      Object.keys(values).forEach(key => {
+        if (Math.random() > 0.7) { // 30% chance de variação
+          const variation = Math.random() > 0.5 ? 1 : -1;
+          const index = Math.floor(Math.random() * 5);
+          values[key][index] = values[key][index] === 1 ? 0 : 1;
+        }
+      });
+      
+      const labels = ['Preço', 'Qualidade', 'Tempo', 'Disponib.'];
+      const keys = ['price', 'quality', 'time', 'availability'];
+      
+      labels.forEach((label, index) => {
+        const row = document.createElement('div');
+        row.className = 'indicator-row';
+        
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'indicator-label';
+        labelSpan.textContent = label;
+        
+        const bar = document.createElement('div');
+        bar.className = 'indicator-bar';
+        
+        values[keys[index]].forEach(active => {
+          const block = document.createElement('div');
+          block.className = active ? 'indicator-block active' : 'indicator-block';
+          bar.appendChild(block);
+        });
+        
+        row.appendChild(labelSpan);
+        row.appendChild(bar);
+        indicatorsDiv.appendChild(row);
+      });
+      
+      return indicatorsDiv;
+    }
   </script>
 </body>
 </html> 
