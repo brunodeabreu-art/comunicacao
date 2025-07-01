@@ -347,7 +347,7 @@
     }
     .filters-grid {
       display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 2fr 1.5fr 1fr;
       gap: 16px;
       align-items: end;
     }
@@ -525,6 +525,33 @@
           <input type="text" id="searchInput" class="filter-input" placeholder="Nome do fornecedor ou especialidade...">
         </div>
         
+        <div class="filter-group">
+          <label class="filter-label">Tipo de Serviço</label>
+          <select id="serviceFilter" class="filter-input">
+            <option value="">Todos os Serviços</option>
+            <option value="Design & Branding">Design & Branding</option>
+            <option value="Marketing Digital & Performance">Marketing Digital</option>
+            <option value="Conteúdo & Copywriting">Conteúdo & Copy</option>
+            <option value="Audiovisual & Produção">Audiovisual</option>
+            <option value="Comunicação & PR">Comunicação & PR</option>
+            <option value="Analytics & Data">Analytics & Data</option>
+            <option value="Eventos & Experiências">Eventos</option>
+            <option value="Compliance & Regulatório">Compliance</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Tier</label>
+          <select id="tierFilter" class="filter-input">
+            <option value="">Todos os Tiers</option>
+            <option value="BLUE">🔵 Blue (Premium)</option>
+            <option value="GOLD">🟡 Gold (Senior)</option>
+            <option value="SILVER">⚪ Silver (Qualified)</option>
+          </select>
+        </div>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px;">
         <div class="filter-group">
           <label class="filter-label">Preço Mín</label>
           <input type="range" id="priceFilter" class="filter-slider" min="0" max="5" value="0">
@@ -1437,6 +1464,8 @@
     // Filter functionality
     function initializeFilters() {
       const searchInput = document.getElementById('searchInput');
+      const serviceFilter = document.getElementById('serviceFilter');
+      const tierFilter = document.getElementById('tierFilter');
       const priceFilter = document.getElementById('priceFilter');
       const qualityFilter = document.getElementById('qualityFilter');
       const timeFilter = document.getElementById('timeFilter');
@@ -1444,10 +1473,22 @@
       const clearFiltersBtn = document.getElementById('clearFilters');
       const resultsCount = document.getElementById('resultsCount');
 
+      // Service categories mapping
+      const serviceCategories = {
+        'Design & Branding': ['Design & Branding'],
+        'Marketing Digital & Performance': ['Marketing Digital & Performance'],
+        'Conteúdo & Copywriting': ['Conteúdo & Copywriting'],
+        'Audiovisual & Produção': ['Audiovisual & Produção'],
+        'Comunicação & PR': ['Comunicação & PR'],
+        'Analytics & Data': ['Analytics & Data'],
+        'Eventos & Experiências': ['Eventos & Experiências'],
+        'Compliance & Regulatório': ['Compliance & Regulatório']
+      };
+
       // Update slider values
       function updateSliderValue(slider, valueElement) {
         const value = parseInt(slider.value);
-        valueElement.textContent = value === 0 ? 'Qualquer' : `${value}+ estrelas`;
+        valueElement.textContent = value === 0 ? 'Qualquer' : `${value}+ barras`;
       }
 
       // Initialize slider values
@@ -1462,9 +1503,29 @@
       timeFilter.addEventListener('input', () => updateSliderValue(timeFilter, document.getElementById('timeValue')));
       availabilityFilter.addEventListener('input', () => updateSliderValue(availabilityFilter, document.getElementById('availabilityValue')));
 
+      // Get service category for a partner card
+      function getServiceCategory(card) {
+        const categorySection = card.closest('[style*="background: #f8fafc"]');
+        if (!categorySection) return '';
+        
+        const categoryTitle = categorySection.querySelector('h2');
+        return categoryTitle ? categoryTitle.textContent.trim() : '';
+      }
+
+      // Get performance indicator value by counting active blocks
+      function getIndicatorValue(card, indicatorIndex) {
+        const indicators = card.querySelectorAll('.indicator-row');
+        if (!indicators[indicatorIndex]) return 0;
+        
+        const activeBlocks = indicators[indicatorIndex].querySelectorAll('.indicator-block.active, .indicator-block.blue-active, .indicator-block.gold-active, .indicator-block.silver-active');
+        return activeBlocks.length;
+      }
+
       // Apply filters
       function applyFilters() {
         const searchTerm = searchInput.value.toLowerCase();
+        const selectedService = serviceFilter.value;
+        const selectedTier = tierFilter.value;
         const minPrice = parseInt(priceFilter.value);
         const minQuality = parseInt(qualityFilter.value);
         const minTime = parseInt(timeFilter.value);
@@ -1474,36 +1535,35 @@
         let visibleCount = 0;
 
         partnerCards.forEach(card => {
-          const partnerName = card.querySelector('.partner-name').textContent.toLowerCase();
-          const partnerTier = card.querySelector('.partner-tier').textContent.toLowerCase();
-          const partnerContact = card.querySelector('.partner-contact').textContent.toLowerCase();
+          const partnerName = card.querySelector('.partner-name')?.textContent.toLowerCase() || '';
+          const partnerType = card.querySelector('.partner-type')?.textContent.toLowerCase() || '';
+          const tierElement = card.querySelector('span[style*="position: absolute"]');
+          const partnerTier = tierElement ? tierElement.textContent.trim() : '';
           
-          // Get indicator values
-          const indicators = card.querySelectorAll('.indicator-row');
-          let priceValue = 0, qualityValue = 0, timeValue = 0, availabilityValue = 0;
+          // Get service category
+          const serviceCategory = getServiceCategory(card);
           
-          indicators.forEach((indicator, index) => {
-            const activeBlocks = indicator.querySelectorAll('.indicator-block.active').length;
-            switch(index) {
-              case 0: priceValue = activeBlocks; break;
-              case 1: qualityValue = activeBlocks; break;
-              case 2: timeValue = activeBlocks; break;
-              case 3: availabilityValue = activeBlocks; break;
-            }
-          });
+          // Get performance indicators
+          const priceValue = getIndicatorValue(card, 0);
+          const qualityValue = getIndicatorValue(card, 1);
+          const timeValue = getIndicatorValue(card, 2);
+          const availabilityValue = getIndicatorValue(card, 3);
 
           // Check if partner matches all filters
           const matchesSearch = !searchTerm || 
             partnerName.includes(searchTerm) || 
-            partnerTier.includes(searchTerm) || 
-            partnerContact.includes(searchTerm);
+            partnerType.includes(searchTerm) ||
+            partnerTier.toLowerCase().includes(searchTerm);
           
+          const matchesService = !selectedService || serviceCategory.includes(selectedService);
+          const matchesTier = !selectedTier || partnerTier === selectedTier;
           const matchesPrice = minPrice === 0 || priceValue >= minPrice;
           const matchesQuality = minQuality === 0 || qualityValue >= minQuality;
           const matchesTime = minTime === 0 || timeValue >= minTime;
           const matchesAvailability = minAvailability === 0 || availabilityValue >= minAvailability;
 
-          const isVisible = matchesSearch && matchesPrice && matchesQuality && matchesTime && matchesAvailability;
+          const isVisible = matchesSearch && matchesService && matchesTier && 
+                           matchesPrice && matchesQuality && matchesTime && matchesAvailability;
           
           if (isVisible) {
             card.classList.remove('hidden');
@@ -1516,11 +1576,24 @@
         // Update results count
         const totalCards = partnerCards.length;
         resultsCount.textContent = `${visibleCount} de ${totalCards} fornecedores`;
+        
+        // Hide/show category sections based on visible cards
+        const categorySection = document.querySelectorAll('[style*="background: #f8fafc"]');
+        categorySection.forEach(section => {
+          const visibleCardsInSection = section.querySelectorAll('.partner-card:not(.hidden)').length;
+          if (visibleCardsInSection === 0) {
+            section.style.display = 'none';
+          } else {
+            section.style.display = 'block';
+          }
+        });
       }
 
       // Clear all filters
       function clearFilters() {
         searchInput.value = '';
+        serviceFilter.value = '';
+        tierFilter.value = '';
         priceFilter.value = '0';
         qualityFilter.value = '0';
         timeFilter.value = '0';
@@ -1531,11 +1604,19 @@
         updateSliderValue(timeFilter, document.getElementById('timeValue'));
         updateSliderValue(availabilityFilter, document.getElementById('availabilityValue'));
         
+        // Show all category sections
+        const categorySection = document.querySelectorAll('[style*="background: #f8fafc"]');
+        categorySection.forEach(section => {
+          section.style.display = 'block';
+        });
+        
         applyFilters();
       }
 
       // Event listeners
       searchInput.addEventListener('input', applyFilters);
+      serviceFilter.addEventListener('change', applyFilters);
+      tierFilter.addEventListener('change', applyFilters);
       priceFilter.addEventListener('input', applyFilters);
       qualityFilter.addEventListener('input', applyFilters);
       timeFilter.addEventListener('input', applyFilters);
