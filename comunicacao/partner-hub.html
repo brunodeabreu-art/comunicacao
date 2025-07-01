@@ -303,8 +303,8 @@
       padding-top: 8px;
       border-top: 1px solid #e5e7eb;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4px 8px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
     }
     .indicator-row {
       display: flex;
@@ -313,7 +313,7 @@
       gap: 2px;
     }
     .indicator-label {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       color: #6b7280;
       font-weight: 500;
       text-align: center;
@@ -325,8 +325,8 @@
       justify-content: center;
     }
     .indicator-block {
-      width: 5px;
-      height: 5px;
+      width: 4px;
+      height: 4px;
       border-radius: 1px;
       background: #e5e7eb;
     }
@@ -334,6 +334,92 @@
     .indicator-block.gold-active,
     .indicator-block.silver-active {
       background: #10b981;
+    }
+
+    /* Filters Section */
+    .filters-section {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 24px 0;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .filters-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+      gap: 16px;
+      align-items: end;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 4px;
+    }
+    .filter-input {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      transition: border-color 0.2s ease;
+    }
+    .filter-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    .filter-slider {
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      background: #e5e7eb;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .filter-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #10b981;
+      cursor: pointer;
+    }
+    .filter-slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #10b981;
+      cursor: pointer;
+      border: none;
+    }
+    .slider-value {
+      font-size: 0.7rem;
+      color: #6b7280;
+      text-align: center;
+      margin-top: 2px;
+    }
+    .clear-filters {
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #d1d5db;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .clear-filters:hover {
+      background: #e5e7eb;
+    }
+    .partner-card.hidden {
+      display: none !important;
     }
 
     @media (max-width: 768px) {
@@ -423,6 +509,50 @@
             <div class="tier-spec">Execução dirigida</div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div style="text-align: center; margin-bottom: 16px;">
+        <h3 style="font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0 0 4px 0;">Filtros e Busca</h3>
+        <p style="color: #64748b; font-size: 0.8rem; margin: 0;">Encontre fornecedores por nome, tier ou performance</p>
+      </div>
+      
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label class="filter-label">Buscar Fornecedor</label>
+          <input type="text" id="searchInput" class="filter-input" placeholder="Nome do fornecedor ou especialidade...">
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Preço Mín</label>
+          <input type="range" id="priceFilter" class="filter-slider" min="0" max="5" value="0">
+          <div class="slider-value" id="priceValue">Qualquer</div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Qualidade Mín</label>
+          <input type="range" id="qualityFilter" class="filter-slider" min="0" max="5" value="0">
+          <div class="slider-value" id="qualityValue">Qualquer</div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Tempo Mín</label>
+          <input type="range" id="timeFilter" class="filter-slider" min="0" max="5" value="0">
+          <div class="slider-value" id="timeValue">Qualquer</div>
+        </div>
+        
+        <div class="filter-group">
+          <label class="filter-label">Disponib. Mín</label>
+          <input type="range" id="availabilityFilter" class="filter-slider" min="0" max="5" value="0">
+          <div class="slider-value" id="availabilityValue">Qualquer</div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 16px;">
+        <button id="clearFilters" class="clear-filters">🔄 Limpar Filtros</button>
+        <span id="resultsCount" style="margin-left: 16px; font-size: 0.8rem; color: #6b7280;"></span>
       </div>
     </div>
 
@@ -1282,6 +1412,138 @@
       });
       
       return indicatorsDiv;
+    }
+
+    // Generate performance indicators for all partners
+    setTimeout(() => {
+      generatePerformanceIndicators();
+      initializeFilters();
+    }, 100);
+
+    function generatePerformanceIndicators() {
+      const partnerCards = document.querySelectorAll('.partner-card');
+      
+      partnerCards.forEach(card => {
+        // Verifica se já tem indicadores
+        if (!card.querySelector('.performance-indicators')) {
+          const tierElement = card.querySelector('.partner-tier');
+          const tier = tierElement ? tierElement.textContent.trim() : 'SILVER';
+          const indicators = createIndicators(tier);
+          card.appendChild(indicators);
+        }
+      });
+    }
+
+    // Filter functionality
+    function initializeFilters() {
+      const searchInput = document.getElementById('searchInput');
+      const priceFilter = document.getElementById('priceFilter');
+      const qualityFilter = document.getElementById('qualityFilter');
+      const timeFilter = document.getElementById('timeFilter');
+      const availabilityFilter = document.getElementById('availabilityFilter');
+      const clearFiltersBtn = document.getElementById('clearFilters');
+      const resultsCount = document.getElementById('resultsCount');
+
+      // Update slider values
+      function updateSliderValue(slider, valueElement) {
+        const value = parseInt(slider.value);
+        valueElement.textContent = value === 0 ? 'Qualquer' : `${value}+ estrelas`;
+      }
+
+      // Initialize slider values
+      updateSliderValue(priceFilter, document.getElementById('priceValue'));
+      updateSliderValue(qualityFilter, document.getElementById('qualityValue'));
+      updateSliderValue(timeFilter, document.getElementById('timeValue'));
+      updateSliderValue(availabilityFilter, document.getElementById('availabilityValue'));
+
+      // Update slider values on change
+      priceFilter.addEventListener('input', () => updateSliderValue(priceFilter, document.getElementById('priceValue')));
+      qualityFilter.addEventListener('input', () => updateSliderValue(qualityFilter, document.getElementById('qualityValue')));
+      timeFilter.addEventListener('input', () => updateSliderValue(timeFilter, document.getElementById('timeValue')));
+      availabilityFilter.addEventListener('input', () => updateSliderValue(availabilityFilter, document.getElementById('availabilityValue')));
+
+      // Apply filters
+      function applyFilters() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const minPrice = parseInt(priceFilter.value);
+        const minQuality = parseInt(qualityFilter.value);
+        const minTime = parseInt(timeFilter.value);
+        const minAvailability = parseInt(availabilityFilter.value);
+
+        const partnerCards = document.querySelectorAll('.partner-card');
+        let visibleCount = 0;
+
+        partnerCards.forEach(card => {
+          const partnerName = card.querySelector('.partner-name').textContent.toLowerCase();
+          const partnerTier = card.querySelector('.partner-tier').textContent.toLowerCase();
+          const partnerContact = card.querySelector('.partner-contact').textContent.toLowerCase();
+          
+          // Get indicator values
+          const indicators = card.querySelectorAll('.indicator-row');
+          let priceValue = 0, qualityValue = 0, timeValue = 0, availabilityValue = 0;
+          
+          indicators.forEach((indicator, index) => {
+            const activeBlocks = indicator.querySelectorAll('.indicator-block.active').length;
+            switch(index) {
+              case 0: priceValue = activeBlocks; break;
+              case 1: qualityValue = activeBlocks; break;
+              case 2: timeValue = activeBlocks; break;
+              case 3: availabilityValue = activeBlocks; break;
+            }
+          });
+
+          // Check if partner matches all filters
+          const matchesSearch = !searchTerm || 
+            partnerName.includes(searchTerm) || 
+            partnerTier.includes(searchTerm) || 
+            partnerContact.includes(searchTerm);
+          
+          const matchesPrice = minPrice === 0 || priceValue >= minPrice;
+          const matchesQuality = minQuality === 0 || qualityValue >= minQuality;
+          const matchesTime = minTime === 0 || timeValue >= minTime;
+          const matchesAvailability = minAvailability === 0 || availabilityValue >= minAvailability;
+
+          const isVisible = matchesSearch && matchesPrice && matchesQuality && matchesTime && matchesAvailability;
+          
+          if (isVisible) {
+            card.classList.remove('hidden');
+            visibleCount++;
+          } else {
+            card.classList.add('hidden');
+          }
+        });
+
+        // Update results count
+        const totalCards = partnerCards.length;
+        resultsCount.textContent = `${visibleCount} de ${totalCards} fornecedores`;
+      }
+
+      // Clear all filters
+      function clearFilters() {
+        searchInput.value = '';
+        priceFilter.value = '0';
+        qualityFilter.value = '0';
+        timeFilter.value = '0';
+        availabilityFilter.value = '0';
+        
+        updateSliderValue(priceFilter, document.getElementById('priceValue'));
+        updateSliderValue(qualityFilter, document.getElementById('qualityValue'));
+        updateSliderValue(timeFilter, document.getElementById('timeValue'));
+        updateSliderValue(availabilityFilter, document.getElementById('availabilityValue'));
+        
+        applyFilters();
+      }
+
+      // Event listeners
+      searchInput.addEventListener('input', applyFilters);
+      priceFilter.addEventListener('input', applyFilters);
+      qualityFilter.addEventListener('input', applyFilters);
+      timeFilter.addEventListener('input', applyFilters);
+      availabilityFilter.addEventListener('input', applyFilters);
+      clearFiltersBtn.addEventListener('click', clearFilters);
+
+      // Initial filter application
+      applyFilters();
     }
   </script>
 </body>
