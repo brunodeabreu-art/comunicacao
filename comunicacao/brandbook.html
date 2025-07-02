@@ -160,7 +160,7 @@
 
         .hero {
             background: var(--gray-50);
-            padding: 80px 0;
+            padding: 100px 0;
             text-align: center;
         }
 
@@ -184,7 +184,15 @@
         }
 
         .section {
-            margin: 80px 0;
+            margin: 120px 0;
+        }
+
+        .section:first-of-type {
+            margin-top: 60px;
+        }
+
+        .section:last-of-type {
+            margin-bottom: 60px;
         }
 
         .section-title {
@@ -200,21 +208,23 @@
             color: var(--gray-600);
             text-align: center;
             max-width: 800px;
-            margin: 0 auto 48px;
+            margin: 0 auto 64px;
+            line-height: 1.6;
         }
 
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 32px;
+            gap: 40px;
         }
 
         .card {
             background: var(--white);
-            padding: 32px;
-            border-radius: 12px;
+            padding: 40px 32px;
+            border-radius: 16px;
             border: 1px solid var(--gray-200);
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .card:hover {
@@ -227,13 +237,23 @@
             font-size: 24px;
             font-weight: 600;
             color: var(--gray-900);
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+
+        .card p {
+            line-height: 1.7;
             margin-bottom: 16px;
+        }
+
+        .card p:last-child {
+            margin-bottom: 0;
         }
 
         .visual-section {
             background: var(--gray-50);
-            padding: 80px 0;
-            margin: 80px 0;
+            padding: 100px 0;
+            margin: 120px 0;
         }
 
         .image-grid {
@@ -489,15 +509,107 @@
             opacity: 0.7;
         }
 
+        /* Section Dividers */
+        .section-divider {
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--amigo-blue), rgba(0, 136, 255, 0.6));
+            margin: 80px auto;
+            border-radius: 2px;
+        }
+
+        /* Enhanced responsive design */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 40px; }
-            .section-title { font-size: 32px; }
-            .grid-3 { grid-template-columns: 1fr; }
-            .examples-grid { grid-template-columns: 1fr; }
-            .communication-strategy { grid-template-columns: 1fr; }
-            .unified-content { grid-template-columns: 1fr; }
-            .container { padding: 0 16px; }
-            .modal-content { max-width: 95%; }
+            .section {
+                margin: 80px 0;
+            }
+
+            .visual-section {
+                padding: 60px 0;
+                margin: 80px 0;
+            }
+
+            .hero {
+                padding: 60px 0;
+            }
+
+            .hero h1 { 
+                font-size: 40px; 
+            }
+
+            .grid-3 { 
+                grid-template-columns: 1fr;
+                gap: 24px; 
+            }
+            
+            .section-title { 
+                font-size: 32px; 
+            }
+
+            .section-subtitle {
+                margin: 0 auto 48px;
+                font-size: 16px;
+            }
+
+            .card {
+                padding: 24px 20px;
+            }
+
+            .examples-grid { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .communication-strategy { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .unified-content { 
+                grid-template-columns: 1fr; 
+            }
+            
+            .container { 
+                padding: 0 20px; 
+            }
+            
+            .modal-content { 
+                max-width: 95%; 
+            }
+
+            .section-divider {
+                width: 80px;
+                margin: 60px auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section {
+                margin: 60px 0;
+            }
+
+            .hero {
+                padding: 40px 0;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .container {
+                padding: 0 16px;
+            }
+
+            .card {
+                padding: 20px 16px;
+            }
+
+            .section-divider {
+                width: 60px;
+                margin: 40px auto;
+            }
         }
     </style>
 </head>
@@ -623,6 +735,8 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <section class="section">
         <div class="container">
             <h2 class="section-title">Valores Fundamentais</h2>
@@ -670,6 +784,8 @@
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <section class="section">
         <div class="container">
@@ -859,6 +975,8 @@
         </div>
     </section>
 
+    <div class="section-divider"></div>
+
     <section class="section">
         <div class="container">
             <h2 class="section-title">Brand Personas</h2>
@@ -924,6 +1042,102 @@
                                 <li>Expansão/franchising</li>
                             </ul>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="visual-section">
+        <div class="container">
+            <h2 class="section-title">Como Falamos com Cada Público</h2>
+            <p class="section-subtitle">
+                Estratégias de comunicação adaptadas para diferentes personas, mantendo a consistência da marca.
+            </p>
+
+            <div class="communication-strategy">
+                <div class="strategy-section">
+                    <h3>Recém-Formados</h3>
+                    <div class="strategy-content">
+                        <div class="strategy-item">
+                            <h4>Tom:</h4>
+                            <p>Inspirador, motivacional e educativo. Linguagem próxima e descomplicada.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Canais:</h4>
+                            <p>Instagram, TikTok, WhatsApp, eventos acadêmicos, parcerias com universidades.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Mensagens-chave:</h4>
+                            <p>"Comece sua carreira do jeito certo" • "Tecnologia acessível para quem está começando" • "Seu primeiro passo profissional"</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Exemplo:</h4>
+                            <p class="example-text">"Recém-formado? A Amigo está aqui para te ajudar a dar os primeiros passos com segurança. Começe grátis e cresça conosco! 🚀"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="strategy-section">
+                    <h3>Autônomos</h3>
+                    <div class="strategy-content">
+                        <div class="strategy-item">
+                            <h4>Tom:</h4>
+                            <p>Prático, objetivo e focado em resultados. Demonstração de ROI e eficiência.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Canais:</h4>
+                            <p>LinkedIn, Google Ads, e-mail marketing, webinars especializados.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Mensagens-chave:</h4>
+                            <p>"Ganhe tempo para o que importa" • "Simplifique sua gestão" • "Mais tempo com pacientes, menos com burocracia"</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Exemplo:</h4>
+                            <p class="example-text">"Economize 15h por semana na gestão do seu consultório. Com o Amigo, você foca no atendimento enquanto cuidamos da parte administrativa."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="strategy-section">
+                    <h3>Empresários e Gestores</h3>
+                    <div class="strategy-content">
+                        <div class="strategy-item">
+                            <h4>Tom:</h4>
+                            <p>Estratégico, analítico e focado em crescimento. Linguagem corporativa com dados concretos.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Canais:</h4>
+                            <p>LinkedIn, eventos corporativos, sales diretos, parcerias estratégicas.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Mensagens-chave:</h4>
+                            <p>"Escale seu negócio com segurança" • "Visibilidade total da operação" • "Tecnologia para crescer sem limites"</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Exemplo:</h4>
+                            <p class="example-text">"Aumente a receita da sua clínica em até 40% com relatórios inteligentes e gestão otimizada. Veja como grandes grupos médicos escolhem o Amigo."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="unified-strategy">
+                <h3>Comunicação Unificada</h3>
+                <p>Quando nos dirigimos aos três públicos simultaneamente, utilizamos:</p>
+                <div class="unified-content">
+                    <div class="unified-item">
+                        <h4>Tom Universal:</h4>
+                        <p>Profissional, mas acessível. Focado na transformação que a tecnologia pode proporcionar.</p>
+                    </div>
+                    <div class="unified-item">
+                        <h4>Mensagem Central:</h4>
+                        <p>"Tecnologia que abraça toda sua jornada profissional"</p>
+                    </div>
+                    <div class="unified-item">
+                        <h4>Abordagem:</h4>
+                        <p>Histórias que mostram evolução profissional, desde a formação até a consolidação empresarial.</p>
                     </div>
                 </div>
             </div>
@@ -1241,6 +1455,8 @@
             </div>
         </div>
     </section>
+
+    <div class="section-divider"></div>
 
     <section class="section">
         <div class="container">
@@ -1756,102 +1972,6 @@
                             <p><strong>Menções da Marca:</strong> +127 (mês)</p>
                             <p><strong>Sentimento:</strong> 82% positivo</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="visual-section">
-        <div class="container">
-            <h2 class="section-title">Como Falamos com Cada Público</h2>
-            <p class="section-subtitle">
-                Estratégias de comunicação adaptadas para diferentes personas, mantendo a consistência da marca.
-            </p>
-
-            <div class="communication-strategy">
-                <div class="strategy-section">
-                    <h3>Recém-Formados</h3>
-                    <div class="strategy-content">
-                        <div class="strategy-item">
-                            <h4>Tom:</h4>
-                            <p>Inspirador, motivacional e educativo. Linguagem próxima e descomplicada.</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Canais:</h4>
-                            <p>Instagram, TikTok, WhatsApp, eventos acadêmicos, parcerias com universidades.</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Mensagens-chave:</h4>
-                            <p>"Comece sua carreira do jeito certo" • "Tecnologia acessível para quem está começando" • "Seu primeiro passo profissional"</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Exemplo:</h4>
-                            <p class="example-text">"Recém-formado? A Amigo está aqui para te ajudar a dar os primeiros passos com segurança. Começe grátis e cresça conosco! 🚀"</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="strategy-section">
-                    <h3>Autônomos</h3>
-                    <div class="strategy-content">
-                        <div class="strategy-item">
-                            <h4>Tom:</h4>
-                            <p>Prático, objetivo e focado em resultados. Demonstração de ROI e eficiência.</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Canais:</h4>
-                            <p>LinkedIn, Google Ads, e-mail marketing, webinars especializados.</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Mensagens-chave:</h4>
-                            <p>"Ganhe tempo para o que importa" • "Simplifique sua gestão" • "Mais tempo com pacientes, menos com burocracia"</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Exemplo:</h4>
-                            <p class="example-text">"Economize 15h por semana na gestão do seu consultório. Com o Amigo, você foca no atendimento enquanto cuidamos da parte administrativa."</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="strategy-section">
-                    <h3>Empresários e Gestores</h3>
-                    <div class="strategy-content">
-                        <div class="strategy-item">
-                            <h4>Tom:</h4>
-                            <p>Estratégico, analítico e focado em crescimento. Linguagem corporativa com dados concretos.</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Canais:</h4>
-                            <p>LinkedIn, eventos corporativos, sales diretos, parcerias estratégicas.</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Mensagens-chave:</h4>
-                            <p>"Escale seu negócio com segurança" • "Visibilidade total da operação" • "Tecnologia para crescer sem limites"</p>
-                        </div>
-                        <div class="strategy-item">
-                            <h4>Exemplo:</h4>
-                            <p class="example-text">"Aumente a receita da sua clínica em até 40% com relatórios inteligentes e gestão otimizada. Veja como grandes grupos médicos escolhem o Amigo."</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="unified-strategy">
-                <h3>Comunicação Unificada</h3>
-                <p>Quando nos dirigimos aos três públicos simultaneamente, utilizamos:</p>
-                <div class="unified-content">
-                    <div class="unified-item">
-                        <h4>Tom Universal:</h4>
-                        <p>Profissional, mas acessível. Focado na transformação que a tecnologia pode proporcionar.</p>
-                    </div>
-                    <div class="unified-item">
-                        <h4>Mensagem Central:</h4>
-                        <p>"Tecnologia que abraça toda sua jornada profissional"</p>
-                    </div>
-                    <div class="unified-item">
-                        <h4>Abordagem:</h4>
-                        <p>Histórias que mostram evolução profissional, desde a formação até a consolidação empresarial.</p>
                     </div>
                 </div>
             </div>
