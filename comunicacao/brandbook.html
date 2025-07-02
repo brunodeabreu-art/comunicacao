@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Book - Amigo Tech</title>
+    <style>
+        :root {
+            --amigo-blue: #0088FF;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background: var(--white);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--amigo-blue);
+        }
+
+        .back-btn {
+            background: transparent;
+            color: var(--gray-500);
+            border: 1px solid var(--gray-200);
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: var(--gray-50);
+            border-color: var(--gray-300);
+            color: var(--gray-700);
+        }
+
+        /* Confirmation Modal */
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .confirm-modal-content {
+            background: white;
+            margin: 15% auto;
+            padding: 32px;
+            border: none;
+            border-radius: 16px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .confirm-modal h3 {
+            margin-bottom: 16px;
+            color: var(--gray-900);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .confirm-modal p {
+            margin-bottom: 24px;
+            color: var(--gray-600);
+            font-size: 14px;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .confirm-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .confirm-yes {
+            background: var(--amigo-blue);
+            color: white;
+        }
+
+        .confirm-yes:hover {
+            background: #0077dd;
+        }
+
+        .confirm-no {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .confirm-no:hover {
+            background: var(--gray-200);
+        }
+
+        .header-logo {
+            width: 120px;
+            height: auto;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .header-logo:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: var(--gray-50);
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 300;
+            color: var(--gray-900);
+            margin-bottom: 24px;
+        }
+
+        .hero .subtitle {
+            font-size: 20px;
+            color: var(--gray-600);
+            margin-bottom: 32px;
+        }
+
+        .hero .tagline {
+            font-size: 16px;
+            font-weight: 500;
+            font-style: italic;
+        }
+
+        .section {
+            margin: 80px 0;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 300;
+            color: var(--gray-900);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--gray-600);
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 48px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--amigo-blue);
+            box-shadow: 0 10px 40px rgba(0, 136, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card h3 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+
+        .visual-section {
+            background: var(--gray-50);
+            padding: 80px 0;
+            margin: 80px 0;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .image-container {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-container img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .image-container img:hover {
+            opacity: 0.9;
+        }
+
+        .image-caption {
+            padding: 16px;
+            font-size: 14px;
+            color: var(--gray-600);
+            text-align: center;
+        }
+
+        /* Brand Personas Styles */
+        .persona-card {
+            border-left: 4px solid var(--amigo-blue);
+        }
+
+        .persona-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .persona-tag {
+            background: rgba(0, 136, 255, 0.1);
+            color: var(--amigo-blue);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .persona-details p {
+            margin-bottom: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .persona-needs {
+            margin-top: 16px;
+        }
+
+        .persona-needs h4 {
+            font-size: 14px;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+        }
+
+        .persona-needs ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .persona-needs li {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-bottom: 4px;
+            position: relative;
+            padding-left: 16px;
+        }
+
+        .persona-needs li:before {
+            content: "•";
+            color: var(--amigo-blue);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Examples Styles */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .example-category {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .example-category h3 {
+            color: var(--gray-900);
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .example-items {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .example-item {
+            background: var(--gray-50);
+            padding: 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Communication Strategy Styles */
+        .communication-strategy {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        .strategy-section {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 24px;
+        }
+
+        .strategy-section h3 {
+            color: var(--amigo-blue);
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .strategy-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .strategy-item h4 {
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .strategy-item p {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .example-text {
+            background: var(--gray-50);
+            padding: 12px;
+            border-radius: 6px;
+            font-style: italic;
+            border-left: 3px solid var(--amigo-blue);
+        }
+
+        .unified-strategy {
+            margin-top: 48px;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 32px;
+        }
+
+        .unified-strategy h3 {
+            color: var(--gray-900);
+            margin-bottom: 16px;
+        }
+
+        .unified-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .unified-item h4 {
+            color: var(--amigo-blue);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .unified-item p {
+            font-size: 14px;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        /* Modal for image viewing */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90%;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .close-modal:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 40px; }
+            .section-title { font-size: 32px; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .examples-grid { grid-template-columns: 1fr; }
+            .communication-strategy { grid-template-columns: 1fr; }
+            .unified-content { grid-template-columns: 1fr; }
+            .container { padding: 0 16px; }
+            .modal-content { max-width: 95%; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+                    <div class="header-content">
+            <a href="../main.html" style="text-decoration: none;">
+                <img src="../logo.png" alt="Amigo Tech" class="header-logo" style="cursor: pointer; transition: opacity 0.3s ease;">
+            </a>
+            <a href="#" class="back-btn" onclick="confirmExit(event)">← Sair</a>
+        </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Brand Book</h1>
+            <p class="subtitle"></p>
+            <p class="tagline">"A simplicidade é o último grau de sofisticação"</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Nossa História</h2>
+            <p class="section-subtitle">
+                Fundada em 2017 em Recife, a Amigo Tech revolucionou a gestão em saúde com paixão e propósito.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>2017 - Fundação</h3>
+                    <p>Nascemos em Recife com o propósito de promover, facilitar e simplificar a saúde através de tecnologia que abraça.</p>
+                </div>
+                <div class="card">
+                    <h3>2024 - Expansão</h3>
+                    <p>Mais de 50.000 profissionais de saúde, 6.000+ clínicas e consolidação como plataforma all-in-one líder do mercado brasileiro.</p>
+                </div>
+                <div class="card">
+                    <h3>Futuro</h3>
+                    <p>Continuar sendo o ecossistema all-in-one líder em gestão médica no Brasil.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Essência da Marca</h2>        
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Missão</h3>
+                    <p>Simplificar processos e oferecer uma gestão inteligente e completa para profissionais de saúde através de tecnologia e serviços integrados.</p>
+                </div>
+                <div class="card">
+                    <h3>Visão</h3>
+                    <p>Ser a plataforma all-in-one líder no Brasil para profissionais de saúde, reconhecida pela excelência em inovação e simplicidade.</p>
+                </div>
+                <div class="card">
+                    <h3>Propósito</h3>
+                    <p>Permitir que profissionais de saúde se preocupem com o que realmente importa: cuidar do paciente, administrar tratamentos e evoluir na carreira.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Números que Falam</h2>
+            <p class="section-subtitle">
+                Impacto real na vida de milhares de profissionais de saúde pelo Brasil
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>50.000+</h3>
+                    <p><strong>Profissionais de Saúde</strong><br>Utilizam diariamente nossas soluções em todo o Brasil</p>
+                </div>
+                <div class="card">
+                    <h3>6.000+</h3>
+                    <p><strong>Clínicas e Consultórios</strong><br>Confiam em nossa plataforma para gestão completa</p>
+                </div>
+                <div class="card">
+                    <h3>9.3/10</h3>
+                    <p><strong>Satisfação do Cliente</strong><br>Nota média de avaliação dos nossos usuários</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Website Oficial</h2>
+            <p class="section-subtitle">
+                Conheça nossa plataforma digital completa
+            </p>
+            
+            <div style="max-width: 600px; margin: 48px auto; border: 1px solid var(--gray-200); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);">
+                <div style="background: var(--gray-100); padding: 12px 16px; display: flex; align-items: center; gap: 12px;">
+                    <div style="display: flex; gap: 6px;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></span>
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></span>
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: #27ca3f;"></span>
+                    </div>
+                    <div style="background: white; padding: 4px 12px; border-radius: 4px; font-size: 14px; color: var(--gray-600); flex: 1; text-align: center;">
+                        amigotech.com.br
+                    </div>
+                </div>
+                <div style="padding: 32px; background: var(--gray-50); color: var(--gray-800); text-align: center; border-top: 3px solid var(--amigo-blue);">
+                    <h3 style="font-size: 20px; margin-bottom: 16px; margin: 0 0 16px 0; color: var(--gray-900);">Soluções que simplificam</h3>
+                    <p style="margin-bottom: 24px; color: var(--gray-600);">Plataforma all-in-one para toda a jornada do profissional de saúde</p>
+                    <ul style="list-style: none; padding: 0; margin: 24px 0; text-align: left; max-width: 300px; margin-left: auto; margin-right: auto; color: var(--gray-600);">
+                        <li style="margin-bottom: 8px;">• Aplicativos para clínicas e profissionais</li>
+                        <li style="margin-bottom: 8px;">• Contabilidade especializada em saúde</li>
+                        <li style="margin-bottom: 8px;">• Soluções financeiras integradas</li>
+                    </ul>
+                    <a href="https://www.amigotech.com.br/" target="_blank" style="display: inline-block; background: var(--amigo-blue); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; transition: all 0.3s ease; font-size: 14px;">
+                        Visitar Site Oficial →
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Valores Fundamentais</h2>
+            <p class="section-subtitle">
+                Princípios que guiam nossa cultura organizacional e tomada de decisões
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Design & Simplicidade</h3>
+                    <p>Desenhamos soluções que descomplicam a vida das empresas e das pessoas. Fazer mais com menos e com uso da tecnologia.</p>
+                </div>
+                <div class="card">
+                    <h3>Suporte ao Cliente</h3>
+                    <p>Otimizamos o tempo dos nossos clientes na busca de soluções. Trazer soluções rápidas e assertivas faz parte do nosso dia a dia.</p>
+                </div>
+                <div class="card">
+                    <h3>Privacidade & Segurança</h3>
+                    <p>Privacidade é um direito fundamental, portanto somos neuróticos com a guarda e segurança de informações.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Cultura Amigo</h2>
+            <p class="section-subtitle">
+                #paixãomudatudo - Nossa paixão é o combustível que impulsiona cada passo
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Paixão Transformadora</h3>
+                    <p>Acreditamos que a paixão é o sentimento intenso que possui a capacidade de alterar comportamentos e pensamentos para melhor.</p>
+                </div>
+                <div class="card">
+                    <h3>Inovação Contínua</h3>
+                    <p>Desenvolvemos soluções inovadoras que servem como pontes na rotina de milhares de profissionais da saúde.</p>
+                </div>
+                <div class="card">
+                    <h3>Crescimento Conjunto</h3>
+                    <p>Criamos um ecossistema robusto e integrado, onde tecnologia e pessoas caminham juntas rumo ao sucesso.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Guidelines Técnicas</h2>
+            <p class="section-subtitle">
+                Especificações técnicas para aplicação correta da marca em todos os contextos.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Malha de Construção</h3>
+                    <div style="background: var(--gray-50); padding: 24px; border-radius: 8px; margin: 16px 0;">
+                        <div style="width: 100px; height: 60px; border: 2px dashed var(--amigo-blue); position: relative; margin: 0 auto;">
+                            <div style="position: absolute; top: -20px; left: 0; font-size: 10px; color: var(--gray-600);">x</div>
+                            <div style="position: absolute; left: -20px; top: 20px; font-size: 10px; color: var(--gray-600);">2x</div>
+                            <div style="background: var(--amigo-blue); width: 40px; height: 20px; margin: 20px auto; border-radius: 2px;"></div>
+                        </div>
+                    </div>
+                    <p><strong>Proporções:</strong> Logo mantém proporção 2:1 (largura:altura)</p>
+                    <p><strong>Espaçamento mínimo:</strong> Distância mínima = altura da letra "A"</p>
+                    <p><strong>Alinhamento:</strong> Base da marca alinhada à linha de base do texto</p>
+                </div>
+                
+                <div class="card">
+                    <h3>Versões da Marca</h3>
+                    <div style="display: grid; gap: 12px; margin: 16px 0;">
+                        <div style="padding: 12px; background: white; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
+                            <div style="background: var(--amigo-blue); color: white; padding: 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">AMIGO</div>
+                            <span style="font-size: 11px; color: var(--gray-600);">Horizontal Colorida</span>
+                        </div>
+                        <div style="padding: 12px; background: var(--gray-900); border-radius: 6px; text-align: center;">
+                            <div style="color: white; padding: 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">AMIGO</div>
+                            <span style="font-size: 11px; color: var(--gray-400);">Negativa (Branca)</span>
+                        </div>
+                        <div style="padding: 12px; background: white; border: 1px solid var(--gray-200); border-radius: 6px; text-align: center;">
+                            <div style="color: var(--gray-900); padding: 8px; border-radius: 4px; font-size: 12px; font-weight: 600;">AMIGO</div>
+                            <span style="font-size: 11px; color: var(--gray-600);">Monocromática</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Especificações Técnicas</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Digital (RGB):</strong><br>
+                        Azul: #0088FF<br>
+                        Cinza: #4B5563</p>
+                        
+                        <p><strong>Impressão (CMYK):</strong><br>
+                        Azul: C85 M45 Y0 K0<br>
+                        Cinza: C0 M0 Y0 K75</p>
+                        
+                        <p><strong>Pantone:</strong><br>
+                        Azul: 2925 C<br>
+                        Cinza: Cool Gray 11 C</p>
+                        
+                        <p><strong>Tamanho Mínimo:</strong><br>
+                        Digital: 32px altura<br>
+                        Impressão: 8mm altura</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-3" style="margin-top: 32px;">
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3>❌ Uso Incorreto da Marca</h3>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 16px;">
+                        <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                            <div style="background: var(--amigo-blue); color: white; padding: 6px; border-radius: 4px; font-size: 10px; transform: rotate(15deg);">AMIGO</div>
+                            <p style="font-size: 12px; color: var(--gray-600); margin-top: 8px;">❌ Não rotacionar</p>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                            <div style="background: red; color: white; padding: 6px; border-radius: 4px; font-size: 10px;">AMIGO</div>
+                            <p style="font-size: 12px; color: var(--gray-600); margin-top: 8px;">❌ Não alterar cores</p>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                            <div style="background: var(--amigo-blue); color: white; padding: 6px; border-radius: 4px; font-size: 10px; transform: scaleX(1.5);">AMIGO</div>
+                            <p style="font-size: 12px; color: var(--gray-600); margin-top: 8px;">❌ Não distorcer</p>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px;">
+                            <div style="background: var(--amigo-blue); color: white; padding: 6px; border-radius: 4px; font-size: 10px; border: 2px solid black;">AMIGO</div>
+                            <p style="font-size: 12px; color: var(--gray-600); margin-top: 8px;">❌ Não adicionar bordas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="visual-section">
+        <div class="container">
+            <h2 class="section-title">Identidade Visual</h2>
+            <p class="section-subtitle">
+                Nossa identidade visual é a expressão gráfica de nossa essência, refletindo simplicidade, toque humano e inovação.
+            </p>
+
+            <div class="image-grid">
+                <div class="image-container">
+                    <img src="brandbook/image.png" alt="Logo Amigo Tech">
+                    <div class="image-caption">Logo e Aplicações</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy.png" alt="Elementos visuais">
+                    <div class="image-caption">Elementos Visuais</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy 2.png" alt="Paleta de cores">
+                    <div class="image-caption">Paleta de Cores</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy 3.png" alt="Tipografia">
+                    <div class="image-caption">Tipografia Inter</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy 4.png" alt="Iconografia">
+                    <div class="image-caption">Iconografia</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy 5.png" alt="Aplicações">
+                    <div class="image-caption">Aplicações da Marca</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Ecossistema Amigo</h2>
+            <p class="section-subtitle">
+                Plataforma All-in-One que acompanha o profissional de saúde desde a faculdade até a aposentadoria.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Amigo Clinic</h3>
+                    <p>Plataforma completa para gestão de clínicas, abrangendo fluxos back-office e front-office, desde agendamento até faturamento.</p>
+                </div>
+                <div class="card">
+                    <h3>Amigo One</h3>
+                    <p>Aplicativo mobile-first para o profissional organizar sua rotina, gerenciar compromissos e realizar teleconsultas.</p>
+                </div>
+                <div class="card">
+                    <h3>Amigo Care</h3>
+                    <p>Solução para automatizar o contato com o paciente, focada em relacionamento e marketing para fidelização.</p>
+                </div>
+                <div class="card">
+                    <h3>Amigo Contábil</h3>
+                    <p>Serviço de contabilidade digital especializado na área de saúde, com atendimento personalizado.</p>
+                </div>
+                <div class="card">
+                    <h3>Amigo Pay</h3>
+                    <p>Solução financeira integrada, funcionando como um banco digital completo dentro da plataforma.</p>
+                </div>
+                <div class="card">
+                    <h3>Amigo Intelligence</h3>
+                    <p>Integração de IA para auxiliar em análise de exames, criação de documentos e transcrição de consultas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="visual-section">
+        <div class="container">
+            <h2 class="section-title">Universo Visual</h2>
+            <p class="section-subtitle">
+                Comunicações adaptadas para diferentes públicos, mantendo a consistência da marca.
+            </p>
+
+            <div class="image-grid">
+                <div class="image-container">
+                    <img src="brandbook/image copy 6.png" alt="Elementos da marca">
+                    <div class="image-caption">Elementos da Marca</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy 7.png" alt="Comunicação B2C">
+                    <div class="image-caption">Jornada Profissional - B2C</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy 8.png" alt="Comunicação B2B">
+                    <div class="image-caption">Jornada Profissional - B2B</div>
+                </div>
+                <div class="image-container">
+                    <img src="brandbook/image copy 9.png" alt="Público Interno">
+                    <div class="image-caption">Público Interno</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Brand Personas</h2>
+            <p class="section-subtitle">
+                Nossos três públicos estratégicos definem como desenvolvemos produtos e comunicamos nossa marca.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card persona-card">
+                    <div class="persona-header">
+                        <h3>Recém-Formados</h3>
+                    </div>
+                    <div class="persona-details">
+                        <p><strong>Perfil:</strong> 0-3 anos de formação, residência ou especialização</p>
+                        <p><strong>Renda:</strong> R$ 3-8k/mês</p>
+                        <p><strong>Ticket Médio:</strong> R$ 200-400/mês</p>
+                        <div class="persona-needs">
+                            <h4>Necessidades:</h4>
+                            <ul>
+                                <li>Gestão financeira pessoal</li>
+                                <li>Networking profissional</li>
+                                <li>Ferramentas de estudo</li>
+                                <li>Soluções acessíveis</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card persona-card">
+                    <div class="persona-header">
+                        <h3>Autônomos</h3>
+                        <span class="persona-tag">Consultórios independentes</span>
+                    </div>
+                    <div class="persona-details">
+                        <p><strong>Perfil:</strong> 3-15 anos de experiência, consultório próprio</p>
+                        <p><strong>Renda:</strong> R$ 8-25k/mês</p>
+                        <p><strong>Ticket Médio:</strong> R$ 300-600/mês</p>
+                        <div class="persona-needs">
+                            <h4>Necessidades:</h4>
+                            <ul>
+                                <li>Gestão de agenda/pacientes</li>
+                                <li>Controle financeiro</li>
+                                <li>Marketing médico</li>
+                                <li>Compliance/documentação</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card persona-card">
+                    <div class="persona-header">
+                        <h3>Empresários e Gestores</h3>
+                        <span class="persona-tag">Gestores de negócios médicos</span>
+                    </div>
+                    <div class="persona-details">
+                        <p><strong>Perfil:</strong> 5+ anos de experiência, múltiplos profissionais</p>
+                        <p><strong>Renda:</strong> R$ 50k+/mês</p>
+                        <p><strong>Ticket Médio:</strong> R$ 700-2.500/mês</p>
+                        <div class="persona-needs">
+                            <h4>Necessidades:</h4>
+                            <ul>
+                                <li>ERP médico completo</li>
+                                <li>BI e analytics</li>
+                                <li>Gestão de equipe</li>
+                                <li>Expansão/franchising</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Linguagem e Copywriting</h2>
+            <p class="section-subtitle">
+                Diretrizes de linguagem, terminologia e estruturas de comunicação da Amigo Tech.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Glossário Técnico</h3>
+                    <div style="font-size: 14px; line-height: 1.8;">
+                        <p><strong>All-in-One:</strong> Plataforma completa integrada</p>
+                        <p><strong>Telemedicina:</strong> Atendimento médico digital</p>
+                        <p><strong>Prontuário Eletrônico:</strong> PEP (Registro digital de pacientes)</p>
+                        <p><strong>Banking Médico:</strong> Serviços financeiros especializados</p>
+                        <p><strong>Jornada Profissional:</strong> Trajetória completa na saúde</p>
+                        <p><strong>Hub de Saúde:</strong> Centro integrado de soluções</p>
+                        <p><strong>Ecossistema Amigo:</strong> Conjunto de produtos conectados</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Palavras Proibidas</h3>
+                    <div style="font-size: 14px; line-height: 1.8;">
+                        <p>❌ <strong>Evitar:</strong> Jargões médicos complexos</p>
+                        <p>❌ "Software" → ✅ "Plataforma"</p>
+                        <p>❌ "Sistema" → ✅ "Solução"</p>
+                        <p>❌ "Usuário" → ✅ "Profissional"</p>
+                        <p>❌ "Ferramenta" → ✅ "Tecnologia"</p>
+                        <p>❌ "Complicado" → ✅ "Complexo"</p>
+                        <p>❌ "Barato" → ✅ "Acessível"</p>
+                        <p>❌ "Problema" → ✅ "Desafio"</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Estrutura de Headlines</h3>
+                    <div style="font-size: 14px; line-height: 1.8;">
+                        <p><strong>Fórmula 1:</strong> [Benefício] + [Para quem] + [Como]</p>
+                        <p><em>"Simplifique sua clínica com tecnologia que abraça"</em></p>
+                        
+                        <p><strong>Fórmula 2:</strong> [Ação] + [Resultado] + [Tempo]</p>
+                        <p><em>"Economize 15h por semana na gestão"</em></p>
+                        
+                        <p><strong>Fórmula 3:</strong> [Pergunta] + [Solução]</p>
+                        <p><em>"Médico recém-formado? Comece do jeito certo"</em></p>
+                        
+                        <p><strong>Fórmula 4:</strong> [Dado] + [Impacto]</p>
+                        <p><em>"50.000+ profissionais já simplificaram sua rotina"</em></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-3" style="margin-top: 32px;">
+                <div class="card" style="grid-column: 1 / -1;">
+                    <h3>CTAs Padrão por Campanha</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 16px;">
+                        <div>
+                            <h4 style="color: var(--amigo-blue); margin-bottom: 12px;">Aquisição</h4>
+                            <ul style="font-size: 14px; line-height: 1.6;">
+                                <li>"Experimente grátis por 30 dias"</li>
+                                <li>"Comece agora sem compromisso"</li>
+                                <li>"Veja como funciona na prática"</li>
+                                <li>"Teste todas as funcionalidades"</li>
+                                <li>"Crie sua conta gratuita"</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--amigo-blue); margin-bottom: 12px;">Educação</h4>
+                            <ul style="font-size: 14px; line-height: 1.6;">
+                                <li>"Baixe o guia completo"</li>
+                                <li>"Assista ao webinar gratuito"</li>
+                                <li>"Veja os cases de sucesso"</li>
+                                <li>"Aprenda as melhores práticas"</li>
+                                <li>"Participe da masterclass"</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--amigo-blue); margin-bottom: 12px;">Conversão</h4>
+                            <ul style="font-size: 14px; line-height: 1.6;">
+                                <li>"Fale com um especialista"</li>
+                                <li>"Agende uma demonstração"</li>
+                                <li>"Receba uma proposta personalizada"</li>
+                                <li>"Migre agora com desconto"</li>
+                                <li>"Garante sua vaga limitada"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Digital Guidelines</h2>
+            <p class="section-subtitle">
+                Especificações técnicas para presença digital e redes sociais da Amigo Tech.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Social Media Templates</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Instagram Post:</strong> 1080x1080px</p>
+                        <p><strong>Instagram Stories:</strong> 1080x1920px</p>
+                        <p><strong>LinkedIn Post:</strong> 1200x627px</p>
+                        <p><strong>TikTok/Reels:</strong> 1080x1920px (9:16)</p>
+                        <p><strong>YouTube Thumbnail:</strong> 1280x720px</p>
+                        
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin-top: 12px;">
+                            <p><strong>Template Padrão:</strong></p>
+                            <p>• Logo no canto superior direito</p>
+                            <p>• Cor de fundo: Branco ou Azul Amigo</p>
+                            <p>• Tipografia: Inter Bold para títulos</p>
+                            <p>• CTA sempre presente</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Web Design Patterns</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Botões Primários:</strong></p>
+                        <div style="background: var(--amigo-blue); color: white; padding: 12px 24px; border-radius: 8px; text-align: center; margin: 8px 0; font-weight: 600;">
+                            Começar agora
+                        </div>
+                        
+                        <p><strong>Botões Secundários:</strong></p>
+                        <div style="border: 2px solid var(--amigo-blue); color: var(--amigo-blue); padding: 10px 22px; border-radius: 8px; text-align: center; margin: 8px 0; font-weight: 600;">
+                            Saiba mais
+                        </div>
+                        
+                        <p><strong>Cards:</strong></p>
+                        <div style="border: 1px solid var(--gray-200); border-radius: 12px; padding: 16px; margin: 8px 0;">
+                            <h4 style="margin: 0 0 8px 0;">Título do Card</h4>
+                            <p style="margin: 0; color: var(--gray-600);">Descrição sucinta e clara</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Email Templates</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Header:</strong> Logo + Navegação</p>
+                        <p><strong>Hero:</strong> Título + Subtítulo + CTA</p>
+                        <p><strong>Corpo:</strong> Máximo 150 palavras</p>
+                        <p><strong>Footer:</strong> Contato + Social + Descadastro</p>
+                        
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin-top: 12px;">
+                            <p><strong>Métricas de Sucesso:</strong></p>
+                            <p>• Taxa de abertura: >25%</p>
+                            <p>• Taxa de clique: >3%</p>
+                            <p>• Taxa de descadastro: <0.5%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Guidelines de Vídeo</h2>
+            <p class="section-subtitle">
+                Padrões visuais e técnicos para produção de conteúdo em vídeo da Amigo Tech.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>TikTok & Reels</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Formato:</strong> Vertical 9:16 (1080x1920px)</p>
+                        <p><strong>Duração:</strong> 15-60 segundos</p>
+                        <p><strong>FPS:</strong> 30fps mínimo</p>
+                        
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin: 12px 0;">
+                            <p><strong>Estrutura Obrigatória:</strong></p>
+                            <p>• Hook: Primeiros 3 segundos</p>
+                            <p>• Desenvolvimento: 5-45 segundos</p>
+                            <p>• CTA: Últimos 5 segundos</p>
+                            <p>• Logo: Watermark discreta</p>
+                        </div>
+                        
+                        <p><strong>Trending Topics:</strong></p>
+                        <p>• "POV: Médico usando Amigo"</p>
+                        <p>• "Antes vs Depois da Amigo"</p>
+                        <p>• "5 dicas para médicos"</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>YouTube & LinkedIn</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Intro Padrão:</strong> 3-5 segundos</p>
+                        <p>• Logo animado</p>
+                        <p>• Som: Tom acolhedor</p>
+                        <p>• Transição suave</p>
+                        
+                        <p><strong>Outros Padrão:</strong> 2-3 segundos</p>
+                        <p>• Logo estático</p>
+                        <p>• CTA final</p>
+                        <p>• Links de contato</p>
+                        
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin: 12px 0;">
+                            <p><strong>Thumbnail Guidelines:</strong></p>
+                            <p>• Face humana em destaque</p>
+                            <p>• Texto: máximo 6 palavras</p>
+                            <p>• Cores: Azul Amigo + contraste alto</p>
+                            <p>• Logo no canto inferior direito</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Especificações Técnicas</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Resolução Mínima:</strong></p>
+                        <p>• TikTok/Reels: 1080x1920px</p>
+                        <p>• YouTube: 1920x1080px</p>
+                        <p>• LinkedIn: 1280x720px</p>
+                        
+                        <p><strong>Áudio:</strong></p>
+                        <p>• 48kHz, 16-bit mínimo</p>
+                        <p>• Sem clipping (-6dB peak máximo)</p>
+                        <p>• Música: Licenciada ou livre</p>
+                        
+                        <p><strong>Legenda:</strong></p>
+                        <p>• Sempre presente</p>
+                        <p>• Fonte: Inter Bold</p>
+                        <p>• Contraste adequado (WCAG)</p>
+                        <p>• Posição: Terço inferior</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Parcerias e Co-branding</h2>
+            <p class="section-subtitle">
+                Diretrizes para uso da marca Amigo Tech em parcerias estratégicas e colaborações.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Hierarquia de Marcas</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Marca Principal:</strong> Amigo Tech</p>
+                        <div style="background: var(--amigo-blue); color: white; padding: 12px; border-radius: 6px; text-align: center; margin: 8px 0; font-weight: 600; font-size: 16px;">
+                            AMIGO TECH
+                        </div>
+                        
+                        <p><strong>Marca Parceira:</strong> 75% do tamanho</p>
+                        <div style="background: var(--gray-200); color: var(--gray-800); padding: 10px; border-radius: 6px; text-align: center; margin: 8px 0; font-weight: 600; font-size: 12px;">
+                            MARCA PARCEIRA
+                        </div>
+                        
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin-top: 12px;">
+                            <p><strong>Regras Obrigatórias:</strong></p>
+                            <p>• Amigo sempre maior ou igual</p>
+                            <p>• Separação mínima: 2x altura da logo</p>
+                            <p>• Aprovação prévia obrigatória</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Logos Combinadas</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Formato 1 - Horizontal:</strong></p>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px; background: var(--gray-50); border-radius: 8px; margin: 8px 0;">
+                            <div style="background: var(--amigo-blue); color: white; padding: 8px 12px; border-radius: 4px; font-weight: 600; font-size: 12px;">AMIGO</div>
+                            <span style="color: var(--gray-400);">+</span>
+                            <div style="background: var(--gray-200); color: var(--gray-800); padding: 6px 10px; border-radius: 4px; font-weight: 600; font-size: 10px;">PARCEIRO</div>
+                        </div>
+                        
+                        <p><strong>Formato 2 - Vertical:</strong></p>
+                        <div style="text-align: center; padding: 16px; background: var(--gray-50); border-radius: 8px; margin: 8px 0;">
+                            <div style="background: var(--amigo-blue); color: white; padding: 8px 12px; border-radius: 4px; font-weight: 600; font-size: 12px; margin-bottom: 8px;">AMIGO</div>
+                            <div style="background: var(--gray-200); color: var(--gray-800); padding: 6px 10px; border-radius: 4px; font-weight: 600; font-size: 10px;">PARCEIRO</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Eventos e Patrocínios</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Patrocinador Master:</strong></p>
+                        <p>• Logo 2x maior que outros</p>
+                        <p>• Posição privilegiada (topo/centro)</p>
+                        <p>• Menção obrigatória em materiais</p>
+                        
+                        <p><strong>Co-patrocinador:</strong></p>
+                        <p>• Logo mesmo tamanho dos demais</p>
+                        <p>• Posição estratégica (segunda linha)</p>
+                        <p>• Menção em créditos</p>
+                        
+                        <div style="background: var(--gray-50); padding: 16px; border-radius: 8px; margin-top: 12px;">
+                            <p><strong>Materiais Obrigatórios:</strong></p>
+                            <p>• Backdrop: Logo centralizada</p>
+                            <p>• Crachás: Logo no verso</p>
+                            <p>• Certificados: Logo no rodapé</p>
+                            <p>• Brindes: Logo gravada/impressa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Gerenciamento de Crise</h2>
+            <p class="section-subtitle">
+                Protocolos e respostas padronizadas para situações críticas que podem afetar a reputação da Amigo Tech.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>🚨 Instabilidade da Plataforma</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "O sistema da Amigo caiu durante meu atendimento e perdi todas as informações do paciente!"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Prezado Dr. [Nome], compreendemos sua preocupação e pedimos sinceras desculpas pelo inconveniente. Nossa equipe técnica já foi notificada e está trabalhando para resolver a instabilidade. Todos os dados são salvos automaticamente a cada 30 segundos, portanto suas informações estão seguras. Entraremos em contato em até 2h com um relatório completo. Como compensação, oferecemos 1 mês gratuito de serviço."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💰 Cobrança Indevida</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "Cancelei minha assinatura mas continuaram cobrando! Quero meu dinheiro de volta imediatamente!"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], pedimos desculpas pelo erro em nosso sistema de cobrança. Reconhecemos que isso não deveria ter acontecido. Já iniciamos o processo de estorno que será processado em até 3 dias úteis. Para garantir que isso não se repita, implementamos uma confirmação dupla no cancelamento. Entrará em contato nossa gerente financeira [Nome] hoje ainda para acompanhar pessoalmente seu caso."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📱 Dificuldade Técnica</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "Sou médico, não técnico em informática! O sistema é muito complicado, não consigo usar direito."</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], entendemos sua frustração e estamos aqui para ajudar. Nossa tecnologia foi feita para simplificar, não complicar sua rotina. Agendar uma sessão de treinamento personalizada e gratuita com nosso especialista [Nome] amanhã às [horário]? Em 30 minutos você estará dominando todas as funcionalidades. Também temos vídeos tutoriais específicos para sua especialidade."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🏥 Perda de Dados</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "Sumiram todos os prontuários dos meus pacientes! Isso é grave, posso ser processado!"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], compreendemos a gravidade da situação. PRIMEIRO: seus dados estão seguros em nosso backup automático com certificação ISO 27001. SEGUNDO: nossa equipe técnica sênior está recuperando tudo agora (ETA: 4h). TERCEIRO: oferecemos assistência jurídica gratuita caso necessário. Nosso CEO entrará em contato pessoalmente em 1h para acompanhar a resolução."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>⏰ Suporte Demorado</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "Tem 3 dias que estou tentando falar com o suporte! Ninguém me responde, isso é um absurdo!"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], pedimos sinceras desculpas pela demora no atendimento - isso não reflete nossos padrões de qualidade. Identifiquei que seu ticket foi perdido em nossa migração de sistema. Estou priorizando seu caso AGORA e nossa especialista [Nome] ligará em 15 minutos. Como compensação pelo transtorno, oferecemos 2 meses de consultoria gratuita."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🔐 Segurança de Dados</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "Vi nas notícias que uma empresa de saúde foi hackeada. Como sei que meus dados estão seguros na Amigo?"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], sua preocupação é legítima e compartilhamos esse zelo. A Amigo possui certificação ISO 27001, criptografia de dados ponta-a-ponta, auditoria de segurança trimestral e conformidade com LGPD. Nossos servidores ficam na AWS (mesma infraestrutura do Netflix/NASA). Enviaremos nosso relatório completo de segurança e cronograma de auditorias para sua tranquilidade."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💔 Migração Problemática</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "A migração dos dados do meu sistema anterior foi um desastre! Metade não veio, a outra metade veio errado!"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], assumimos total responsabilidade por essa migração inadequada. Nossa equipe especializada refará todo o processo nas próximas 48h, com verificação linha por linha. Durante esse período, manteremos seu sistema anterior funcionando sem custo. Nosso gerente de migração [Nome] acompanhará pessoalmente todo o processo e oferecemos 3 meses gratuitos pela inconveniência."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📊 Relatórios Incorretos</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "Os relatórios financeiros estão completamente errados! Como vou fechar minha contabilidade assim?"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], reconhecemos a gravidade de relatórios incorretos para sua gestão. Nossa equipe de Business Intelligence corrigirá todos os dados nas próximas 6h e implementará validação dupla. Nosso contador parceiro [Nome] revisará tudo gratuitamente. Se houver qualquer prejuízo com a Receita Federal, assumimos os custos de multas e correções."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>🤝 Atendimento Insatisfatório</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "O atendente foi extremamente grosseiro e disse que eu não sabia usar o sistema direito!"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], pedimos sinceras desculpas pelo tratamento inadequado. Isso vai contra todos os nossos valores de 'toque humano'. O colaborador será imediatamente treinado e a situação será revista. Nosso supervisor [Nome] entrará em contato para resolver sua questão original com a atenção que merece. Este tipo de comportamento não será tolerado em nossa empresa."
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>💼 Cancelamento Contestado</h3>
+                    <div style="background: #fef2f2; border-left: 4px solid #ef4444; padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px; color: #7f1d1d;"><strong>Reclamação:</strong> "Estou cancelando! A Amigo prometeu funcionalidades que nunca foram entregues. Me sinto enganado!"</p>
+                    </div>
+                    <div style="background: #f0f9ff; border-left: 4px solid var(--amigo-blue); padding: 12px; margin: 12px 0; border-radius: 6px;">
+                        <p style="font-size: 14px;"><strong>Resposta Padrão:</strong></p>
+                        <p style="font-size: 14px; line-height: 1.6;">
+                            "Dr. [Nome], lamentamos que sua experiência não atendeu às expectativas. Pode especificar quais funcionalidades não foram entregues? Nossa equipe de produto atualizará você sobre o roadmap real. Se decidir continuar, oferecemos 50% de desconto por 6 meses. Caso prefira cancelar, processaremos sem multa e forneceremos toda assistência para exportar seus dados."
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: var(--gray-50); padding: 24px; border-radius: 12px; margin-top: 32px;">
+                <h3 style="color: var(--amigo-blue); margin-bottom: 16px;">🎯 Protocolo Geral de Crise</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                    <div>
+                        <h4>⚡ Resposta Imediata (até 2h)</h4>
+                        <ul style="font-size: 14px; line-height: 1.6;">
+                            <li>Reconhecer o problema</li>
+                            <li>Demonstrar empatia</li>
+                            <li>Assumir responsabilidade</li>
+                            <li>Oferecer solução concreta</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>🛠️ Resolução (até 24h)</h4>
+                        <ul style="font-size: 14px; line-height: 1.6;">
+                            <li>Executar correção técnica</li>
+                            <li>Validar resolução com cliente</li>
+                            <li>Implementar prevenção</li>
+                            <li>Documentar aprendizado</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>🤝 Follow-up (até 48h)</h4>
+                        <ul style="font-size: 14px; line-height: 1.6;">
+                            <li>Confirmar satisfação</li>
+                            <li>Oferecer compensação</li>
+                            <li>Agendar check-in futuro</li>
+                            <li>Transformar em case positivo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Tom de Voz e Exemplos</h2>
+            <p class="section-subtitle">
+                Como nossa marca se comunica através de diferentes canais e formatos.
+            </p>
+            
+            <div class="examples-grid">
+                <div class="example-category">
+                    <h3>Manchetes de Jornal & Mídia</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "Amigo Tech revoluciona gestão médica com plataforma all-in-one"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "Startup pernambucana transforma rotina de 50 mil profissionais de saúde"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Tecnologia que abraça: como a Amigo Tech simplifica a vida do médico brasileiro"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Da telemedicina ao banking: Amigo Tech oferece ecossistema completo para saúde"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Recife no mapa da inovação: Amigo Tech expande para todo Brasil com solução médica integrada"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>Google Ads & Meta Ads</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "Simplifique sua clínica | Amigo Tech"<br>
+                            <em>Gestão completa em uma plataforma. Prontuário, agenda, financeiro. Teste grátis 30 dias.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "Médico, foque no que importa"<br>
+                            <em>Você cuida dos pacientes, o Amigo cuida da gestão. Tecnologia que abraça.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Economize 15h por semana"<br>
+                            <em>Automação inteligente para consultórios. Mais tempo com pacientes, menos burocracia.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Tudo que você precisa em um só lugar"<br>
+                            <em>Prontuário + Agenda + Financeiro + Telemedicina. Sistema completo para médicos.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Da faculdade à aposentadoria"<br>
+                            <em>Seu parceiro em toda jornada médica. Comece grátis e cresça conosco.</em>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>LinkedIn & Redes Profissionais</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "A simplicidade é o último grau de sofisticação.<br><br>Na Amigo Tech, transformamos complexidade em fluidez. Nosso ecossistema all-in-one prova que alta tecnologia e simplicidade podem coexistir."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "🔍 Dados que importam: Nossos clientes economizam em média 15h por semana.<br><br>Tempo que volta para o que realmente importa: cuidar de vidas."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Da pandemia nasceu nossa força. Em 4 dias, criamos a telemedicina que salvou consultórios.<br><br>Hoje, continuamos inovando para simplificar a vida do profissional de saúde."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Recife → Brasil. Nossa jornada começou com 3 amigos e um sonho.<br><br>Hoje, somos mais de 200 pessoas transformando a saúde no país inteiro."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Tecnologia que abraça não é só nosso slogan. É nossa promessa diária de humanizar a inovação na saúde."
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>Instagram & Stories</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "POV: Você descobriu que existe vida além do Excel 📊✨"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "Plot twist: Gestão de clínica pode ser simples sim 🤯"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Dica de ouro: Configure notificações automáticas e nunca mais perca compromisso ⏰"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Recém-formado? Seu primeiro sistema de gestão pode ser o melhor 🚀"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Aquele momento quando o faturamento fecha sozinho 💙"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>TikTok & Reels</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "Como explicar que sou médico mas entendo de tech 🔬💻 #MedicoTech #Amigo"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "POV: Quando o sistema faz tudo sozinho e você tem tempo para almoçar 🍽️"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Red flag: Sistema que trava na hora da consulta 🚩 Green flag: Amigo ✅"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Me seguindo para dicas de gestão médica que ninguém te ensina na faculdade 📚"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Transição: Da planilha confusa para dashboard inteligente ✨"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>WhatsApp Business & Chatbot</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "Olá, Dr(a)! Sua consulta de amanhã às 14h está confirmada. Precisa reagendar? Digite 1 para sim, 2 para não."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "🔔 Lembrete: Você tem 3 consultas hoje. Quer ver sua agenda completa? Clique aqui."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Oi! Notamos que você ainda não configurou sua telemedicina. Quer um help rápido? É só responder SIM."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "💡 Dica: Seus relatórios mensais estão prontos! Acesse pelo app e veja como foi seu mês."
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Parabéns! Você economizou 12h esta semana com automações. Continue assim! 🚀"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>E-mail Marketing</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "Dr(a), sua rotina pode ser mais simples"<br>
+                            <em>Sabemos que seu tempo é precioso. Por isso, criamos uma plataforma que centraliza tudo.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "O que você faria com 15h extras por semana?"<br>
+                            <em>Nossos clientes descobriram. Automação inteligente que transforma gestão em simplicidade.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Recém-formado? Comece do jeito certo"<br>
+                            <em>Seu primeiro sistema de gestão pode ser o melhor. Planos especiais para iniciantes.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Seu consultório merece mais que planilhas"<br>
+                            <em>Descubra como grandes clínicas gerenciam seus negócios com tecnologia de ponta.</em>
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Novidades que vão simplificar seu mês"<br>
+                            <em>Atualizações exclusivas, dicas práticas e novidades que só nossos clientes recebem primeiro.</em>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>YouTube & Vídeos</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "Como montar um consultório do zero (com tecnologia que funciona)"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "5 erros que TODO médico comete na gestão (e como evitar)"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Por dentro da Amigo: Como revolucionamos a saúde em 4 dias na pandemia"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Depoimento: 'Economizei R$ 50mil por ano mudando meu sistema'"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Tour pela nossa sede: Onde nasce a tecnologia que abraça"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>Podcast & Spotify</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "AmigoCast #01: Como a tecnologia está transformando consultórios pelo Brasil"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "Bate-papo: Dr. Carlos conta como triplicou a receita com gestão inteligente"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Startups de saúde: O que aprendemos construindo um ecossistema médico"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Mesa redonda: Recém-formados discutem os desafios da medicina moderna"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Especial: A história de Recife como polo de inovação em saúde"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>Newsletter & Blog</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "Pulse Semanal: Tendências em saúde digital que todo médico deveria conhecer"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "Case de sucesso: Como a Clínica XYZ aumentou eficiência em 300%"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Guia completo: Telemedicina para iniciantes (com checklist grátis)"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Análise: O futuro da medicina personalizada e o papel da IA"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Dicas práticas: 10 automações que todo consultório deveria ter"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="example-category">
+                    <h3>Eventos & Webinars</h3>
+                    <div class="example-items">
+                        <div class="example-item">
+                            <strong>Opção 1:</strong> "AmigoTalks: Inovação em Saúde - Como a tecnologia está salvando vidas"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 2:</strong> "Masterclass: Gestão financeira para médicos autônomos"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 3:</strong> "Painel: O futuro dos consultórios inteligentes no Brasil"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 4:</strong> "Workshop: Como estruturar seu primeiro consultório com tecnologia"
+                        </div>
+                        <div class="example-item">
+                            <strong>Opção 5:</strong> "Mesa redonda: Líderes de saúde discutem transformação digital"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Próximos Passos</h2>
+            <p class="section-subtitle">
+                Métricas atuais e metas estratégicas para evolução contínua da marca Amigo Tech.
+            </p>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <h3>Brand Awareness</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Reconhecimento Espontâneo</span>
+                            <span style="font-weight: 600; color: var(--amigo-blue);">12%</span>
+                        </div>
+                        <div style="background: var(--gray-200); height: 6px; border-radius: 3px; margin-bottom: 12px;">
+                            <div style="background: var(--amigo-blue); height: 6px; border-radius: 3px; width: 12%;"></div>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                            <span>Reconhecimento Assistido</span>
+                            <span style="font-weight: 600; color: var(--amigo-blue);">34%</span>
+                        </div>
+                        <div style="background: var(--gray-200); height: 6px; border-radius: 3px; margin-bottom: 12px;">
+                            <div style="background: var(--amigo-blue); height: 6px; border-radius: 3px; width: 34%;"></div>
+                        </div>
+                        
+                        <div style="background: var(--gray-50); padding: 12px; border-radius: 6px; margin-top: 12px;">
+                            <p><strong>Meta 2024:</strong> 25% espontâneo</p>
+                            <p><strong>Benchmark Setor:</strong> 18% (HealthTechs)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Consistência Visual</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Audit Score Mensal:</strong></p>
+                        
+                        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>Logo Compliance</span>
+                            <span style="color: #22c55e; font-weight: 600;">94%</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>Cores Corretas</span>
+                            <span style="color: #22c55e; font-weight: 600;">91%</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>Tom de Voz</span>
+                            <span style="color: #f59e0b; font-weight: 600;">78%</span>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin: 8px 0;">
+                            <span>Templates Sociais</span>
+                            <span style="color: #22c55e; font-weight: 600;">89%</span>
+                        </div>
+                        
+                        <div style="background: var(--gray-50); padding: 12px; border-radius: 6px; margin-top: 12px;">
+                            <p><strong>Score Geral:</strong> 88/100</p>
+                            <p style="color: var(--gray-600);">🎯 Meta: >90 pontos</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>Engagement Digital</h3>
+                    <div style="font-size: 14px; line-height: 1.6;">
+                        <p><strong>Instagram:</strong></p>
+                        <p>• Seguidores: 12.4K (+8% mês)</p>
+                        <p>• Engagement: 4.2% (acima da média)</p>
+                        <p>• Reach orgânico: 45K/mês</p>
+                        
+                        <p><strong>LinkedIn:</strong></p>
+                        <p>• Seguidores: 8.9K (+12% mês)</p>
+                        <p>• Impressões: 89K/mês</p>
+                        <p>• CTR: 2.1%</p>
+                        
+                        <p><strong>TikTok:</strong></p>
+                        <p>• Seguidores: 3.2K (+45% mês)</p>
+                        <p>• Views médias: 15K/vídeo</p>
+                        <p>• Virais (>100K): 2/mês</p>
+                        
+                        <div style="background: var(--gray-50); padding: 12px; border-radius: 6px; margin-top: 12px;">
+                            <p><strong>Menções da Marca:</strong> +127 (mês)</p>
+                            <p><strong>Sentimento:</strong> 82% positivo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="visual-section">
+        <div class="container">
+            <h2 class="section-title">Como Falamos com Cada Público</h2>
+            <p class="section-subtitle">
+                Estratégias de comunicação adaptadas para diferentes personas, mantendo a consistência da marca.
+            </p>
+
+            <div class="communication-strategy">
+                <div class="strategy-section">
+                    <h3>Recém-Formados</h3>
+                    <div class="strategy-content">
+                        <div class="strategy-item">
+                            <h4>Tom:</h4>
+                            <p>Inspirador, motivacional e educativo. Linguagem próxima e descomplicada.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Canais:</h4>
+                            <p>Instagram, TikTok, WhatsApp, eventos acadêmicos, parcerias com universidades.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Mensagens-chave:</h4>
+                            <p>"Comece sua carreira do jeito certo" • "Tecnologia acessível para quem está começando" • "Seu primeiro passo profissional"</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Exemplo:</h4>
+                            <p class="example-text">"Recém-formado? A Amigo está aqui para te ajudar a dar os primeiros passos com segurança. Começe grátis e cresça conosco! 🚀"</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="strategy-section">
+                    <h3>Autônomos</h3>
+                    <div class="strategy-content">
+                        <div class="strategy-item">
+                            <h4>Tom:</h4>
+                            <p>Prático, objetivo e focado em resultados. Demonstração de ROI e eficiência.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Canais:</h4>
+                            <p>LinkedIn, Google Ads, e-mail marketing, webinars especializados.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Mensagens-chave:</h4>
+                            <p>"Ganhe tempo para o que importa" • "Simplifique sua gestão" • "Mais tempo com pacientes, menos com burocracia"</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Exemplo:</h4>
+                            <p class="example-text">"Economize 15h por semana na gestão do seu consultório. Com o Amigo, você foca no atendimento enquanto cuidamos da parte administrativa."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="strategy-section">
+                    <h3>Empresários e Gestores</h3>
+                    <div class="strategy-content">
+                        <div class="strategy-item">
+                            <h4>Tom:</h4>
+                            <p>Estratégico, analítico e focado em crescimento. Linguagem corporativa com dados concretos.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Canais:</h4>
+                            <p>LinkedIn, eventos corporativos, sales diretos, parcerias estratégicas.</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Mensagens-chave:</h4>
+                            <p>"Escale seu negócio com segurança" • "Visibilidade total da operação" • "Tecnologia para crescer sem limites"</p>
+                        </div>
+                        <div class="strategy-item">
+                            <h4>Exemplo:</h4>
+                            <p class="example-text">"Aumente a receita da sua clínica em até 40% com relatórios inteligentes e gestão otimizada. Veja como grandes grupos médicos escolhem o Amigo."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="unified-strategy">
+                <h3>Comunicação Unificada</h3>
+                <p>Quando nos dirigimos aos três públicos simultaneamente, utilizamos:</p>
+                <div class="unified-content">
+                    <div class="unified-item">
+                        <h4>Tom Universal:</h4>
+                        <p>Profissional, mas acessível. Focado na transformação que a tecnologia pode proporcionar.</p>
+                    </div>
+                    <div class="unified-item">
+                        <h4>Mensagem Central:</h4>
+                        <p>"Tecnologia que abraça toda sua jornada profissional"</p>
+                    </div>
+                    <div class="unified-item">
+                        <h4>Abordagem:</h4>
+                        <p>Histórias que mostram evolução profissional, desde a formação até a consolidação empresarial.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: var(--gray-50); padding: 48px 0; text-align: center; color: var(--gray-600);">
+        <div class="container">
+            <p>Brand Book Amigo Tech • 2024</p>
+            <p style="margin-top: 8px; font-size: 14px;">"Tecnologia que abraça"</p>
+        </div>
+    </footer>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="confirm-modal">
+        <div class="confirm-modal-content">
+            <h3>Confirmar Saída</h3>
+            <p>Você tem certeza que deseja sair do Brandbook?</p>
+            <div class="confirm-buttons">
+                <a href="../main.html" class="confirm-btn confirm-yes">Sim, sair</a>
+                <button onclick="closeConfirm()" class="confirm-btn confirm-no">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for image viewing -->
+    <div id="imageModal" class="modal">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="">
+        </div>
+    </div>
+
+    <script>
+        // Image modal functionality
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const closeModal = document.querySelector('.close-modal');
+
+        // Add click event to all images in image containers
+        document.querySelectorAll('.image-container img').forEach(img => {
+            img.addEventListener('click', function() {
+                modal.style.display = 'block';
+                modalImg.src = this.src;
+                modalImg.alt = this.alt;
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close modal when clicking the X
+        closeModal.addEventListener('click', function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside the image
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Confirmation modal functions
+        function confirmExit(event) {
+            event.preventDefault();
+            document.getElementById('confirmModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeConfirm() {
+            document.getElementById('confirmModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close confirmation modal with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('confirmModal').style.display === 'block') {
+                closeConfirm();
+            }
+        });
+
+        // Smooth scrolling for page navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

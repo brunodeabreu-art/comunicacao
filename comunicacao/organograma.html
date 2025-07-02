@@ -26,6 +26,30 @@
       padding: 0;
       line-height: 1.5;
     }
+    
+    .back-to-menu {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 20px;
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .back-to-menu:hover {
+      background: var(--light-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.15);
+    }
     .container {
       max-width: 100%;
       margin: 0;
@@ -2459,6 +2483,8 @@
   </style>
 </head>
   <body>
+    <a href="../main.html" class="back-to-menu">← Voltar ao Menu</a>
+    
     <!-- Capa -->
     <div style="height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); margin-bottom: 40px; position: relative;">
       <div style="max-width: 600px; padding: 0 20px;">
@@ -3196,7 +3222,7 @@
     <!-- Pastas de Trabalho -->
     <div class="work-folders-section">
       <div class="section-header-standard">
-        <h2>Pastas de Trabalho do Time</h2>
+        <h2>Pastas de Trabalho</h2>
         <p>Distribuição entre trabalho interno e externo por área de atuação</p>
       </div>
       <div class="section-header">
