@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BattleCards de Vendas - Amigo</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-light: #e0f2fe;
+            --gray: #f3f4f6;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --card: #fff;
+            --text: #222;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --tag-bg: #e0e7ff;
+            --tag-color: #3730a3;
+        }
+        body {
+            background: linear-gradient(135deg, var(--gray-100) 60%, var(--primary-light) 100%);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text);
+            margin: 0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+            position: relative;
+            z-index: 2;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+            position: relative;
+        }
+        .header-title {
+            font-size: 2.3rem;
+            font-weight: 700;
+            color: #111;
+            letter-spacing: -1.2px;
+            margin-bottom: 8px;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        }
+        .header-desc {
+            color: var(--muted);
+            font-size: 1.15rem;
+            margin-top: 8px;
+            font-style: italic;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 32px;
+            justify-content: center;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .filter-group label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+        .filter-group select {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+        }
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .battlecard {
+            background: var(--card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 12px rgba(59,130,246,0.06), 0 1.5px 0.5px var(--gray-200);
+            padding: 24px 20px 18px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: box-shadow 0.18s, border 0.18s, transform 0.18s;
+            cursor: pointer;
+            position: relative;
+            min-height: 180px;
+            outline: none;
+        }
+        .battlecard:focus, .battlecard:hover {
+            box-shadow: 0 8px 32px rgba(59,130,246,0.13);
+            border-color: var(--primary);
+            transform: translateY(-2px) scale(1.012);
+        }
+        .battlecard .card-enum {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        .battlecard .card-title {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2px;
+        }
+        .battlecard .card-category {
+            font-size: 0.93rem;
+            color: var(--muted);
+            font-weight: 500;
+        }
+        .battlecard .card-env {
+            font-size: 0.85rem;
+            color: var(--gray-700);
+            font-style: italic;
+        }
+        .battlecard .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 4px 0 0 0;
+        }
+        .battlecard .tag {
+            background: var(--tag-bg);
+            color: var(--tag-color);
+            font-size: 0.82rem;
+            padding: 2.5px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+        .battlecard .card-desc {
+            font-size: 0.98rem;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .battlecard .card-features {
+            margin-top: 4px;
+            padding-left: 18px;
+        }
+        .battlecard .card-features li {
+            font-size: 0.95rem;
+            color: var(--gray-900);
+            margin-bottom: 2px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        .back-btn:hover {
+            color: #2563eb;
+        }
+        /* Modal expandido e dinâmico */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0; right: 0; bottom: 0;
+            background: rgba(59,130,246,0.10) backdrop-filter: blur(2px);
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-bg.active {
+            display: flex;
+        }
+        .modal {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 8px 48px rgba(59,130,246,0.18);
+            max-width: 900px;
+            width: 96vw;
+            min-height: 80vh;
+            max-height: 96vh;
+            padding: 48px 44px 36px 44px;
+            position: relative;
+            animation: fadeIn 0.22s;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            font-size: 2rem;
+            color: var(--muted);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.18s;
+        }
+        .modal-close:hover {
+            color: var(--primary);
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 18px;
+        }
+        .modal-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(59,130,246,0.08);
+        }
+        .modal-title {
+            font-size: 2.1rem;
+            font-weight: 600;
+            color: #111;
+            margin-bottom: 2px;
+            letter-spacing: -1px;
+        }
+        .modal-category {
+            font-size: 1.05rem;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+        .modal-env {
+            font-size: 1rem;
+            color: var(--gray-700);
+            font-style: italic;
+            margin-bottom: 2px;
+        }
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .modal .tag {
+            background: var(--tag-bg);
+            color: var(--tag-color);
+            font-size: 0.95rem;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+        .modal-desc {
+            font-size: 1.18rem;
+            color: var(--text);
+            margin-bottom: 18px;
+        }
+        .modal-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 18px;
+        }
+        .modal-card {
+            background: var(--gray-100);
+            border-radius: 14px;
+            box-shadow: 0 1px 4px rgba(59,130,246,0.06);
+            padding: 18px 18px 12px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-height: 120px;
+        }
+        .modal-card-title {
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+        .modal-card-list {
+            font-size: 1.01rem;
+            color: var(--gray-900);
+            margin: 0;
+            padding-left: 18px;
+        }
+        @media (max-width: 900px) {
+            .modal { max-width: 99vw; padding: 24px 8px 18px 8px; }
+            .modal-cards { grid-template-columns: 1fr; }
+        }
+        /* Geometric elements */
+        .geo-1, .geo-2, .geo-3 {
+            position: absolute;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.13;
+        }
+        .geo-1 {
+            top: -60px; left: -80px;
+            width: 220px; height: 220px;
+            background: radial-gradient(circle at 60% 40%, var(--primary-light) 60%, transparent 100%);
+            border-radius: 50%;
+        }
+        .geo-2 {
+            bottom: 40px; right: -60px;
+            width: 160px; height: 160px;
+            background: linear-gradient(135deg, var(--primary) 60%, var(--gray-200) 100%);
+            border-radius: 50%;
+        }
+        .geo-3 {
+            top: 60%; left: -40px;
+            width: 90px; height: 90px;
+            background: linear-gradient(120deg, var(--gray-200) 60%, var(--primary-light) 100%);
+            border-radius: 30% 70% 70% 30%/30% 30% 70% 70%;
+        }
+        @media (max-width: 700px) {
+            .container { padding: 16px 4px; }
+            .cards-grid { grid-template-columns: 1fr; }
+            .geo-1, .geo-2, .geo-3 { display: none; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="geo-1"></div>
+    <div class="geo-2"></div>
+    <div class="geo-3"></div>
+    <div class="container">
+        <a href="../main.html" class="back-btn">← Voltar ao Menu</a>
+        <div class="header">
+            <div class="header-title">BattleCards de Vendas</div>
+            <div class="header-desc">Informações estratégicas, temas globais e diferenciais para o time comercial. Clique em qualquer BattleCard para saber mais.</div>
+        </div>
+        <div class="filters">
+            <div class="filter-group">
+                <label for="filter-ambiente">Ambiente</label>
+                <select id="filter-ambiente" onchange="filterCards()">
+                    <option value="">Todos</option>
+                    <option value="EcossistemaAmigo">Ecossistema Amigo</option>
+                    <option value="amigoClinic">Amigo Clinic</option>
+                    <option value="amigoOne">Amigo One</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-categoria">Categoria</label>
+                <select id="filter-categoria" onchange="filterCards()">
+                    <option value="">Todas</option>
+                    <option value="erp">ERP</option>
+                    <option value="crm">CRM</option>
+                    <option value="pagamentos">Pagamentos</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="ia">IA</option>
+                    <option value="assinatura">Assinatura Digital</option>
+                    <option value="contabilidade">Contabilidade</option>
+                    <option value="estoque">Estoque</option>
+                    <option value="folha">Folha de Pagamento</option>
+                    <option value="nfse">NFS-e</option>
+                    <option value="seguro">Seguro</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-produto">Produto</label>
+                <select id="filter-produto" onchange="filterCards()">
+                    <option value="">Todos</option>
+                    <option value="AmigoCare">Amigo Care</option>
+                    <option value="Prime">Prime</option>
+                    <option value="ChatAmigo">ChatAmigo</option>
+                    <option value="Pay">Pay</option>
+                    <option value="SignBox">SignBox</option>
+                    <option value="TrafegoPago">Tráfego Pago</option>
+                    <option value="SeguroAmigo">SeguroAmigo</option>
+                    <option value="AI">AI</option>
+                    <option value="ManutencaoSite">Manutenção de Site</option>
+                    <option value="GestaoRedeSocial">Gestão Rede Social</option>
+                    <option value="Contabilidade">Contabilidade</option>
+                    <option value="Estoque">Estoque</option>
+                    <option value="FolhaPagamento">Folha de Pagamento</option>
+                    <option value="NFS-e">NFS-e</option>
+                    <option value="Premium">Premium</option>
+                </select>
+            </div>
+        </div>
+        <div class="cards-grid" id="cardsGrid">
+            <!-- Os BattleCards serão inseridos via JS -->
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal-bg" id="modalBg">
+        <div class="modal" id="modal">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-avatar" id="modalAvatar"></div>
+                <div>
+                    <div class="modal-title" id="modalTitle"></div>
+                    <div class="modal-category" id="modalCategory"></div>
+                    <div class="modal-env" id="modalEnv"></div>
+                    <div class="modal-tags" id="modalTags"></div>
+                </div>
+            </div>
+            <div class="modal-desc" id="modalDesc"></div>
+            <div class="modal-cards">
+                <div class="modal-card">
+                    <div class="modal-card-title">Funcionalidades Principais</div>
+                    <ul class="modal-card-list" id="modalFeatures"></ul>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-card-title">Cenários de Venda</div>
+                    <ul class="modal-card-list" id="modalScenarios"></ul>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-card-title">Diferenciais Estratégicos</div>
+                    <ul class="modal-card-list" id="modalDifferentials"></ul>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-card-title">Objeções Comuns</div>
+                    <ul class="modal-card-list" id="modalObjections"></ul>
+                </div>
+                <div class="modal-card">
+                    <div class="modal-card-title">Guia de Abordagem</div>
+                    <ul class="modal-card-list" id="modalGuide"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Ícones SVG temáticos para cada produto
+        const avatars = {
+            EcossistemaAmigo: `<svg width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='#3b82f6' opacity='0.12'/><circle cx='20' cy='20' r='10' fill='#3b82f6'/></svg>`,
+            amigoClinic: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='14' y='14' width='12' height='12' rx='3' fill='#3b82f6'/></svg>`,
+            AmigoCare: `<svg width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='#3b82f6' opacity='0.12'/><path d='M20 12a8 8 0 1 1 0 16 8 8 0 0 1 0-16z' fill='#3b82f6'/></svg>`,
+            Prime: `<svg width='40' height='40' viewBox='0 0 40 40'><polygon points='20,8 32,32 8,32' fill='#3b82f6' opacity='0.12'/><polygon points='20,14 28,30 12,30' fill='#3b82f6'/></svg>`,
+            ChatAmigo: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='16' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='12' y='12' width='16' height='8' rx='2' fill='#3b82f6'/></svg>`,
+            Pay: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='16' width='24' height='12' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='14' y='20' width='12' height='4' rx='2' fill='#3b82f6'/></svg>`,
+            SignBox: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='10' y='10' width='20' height='20' rx='4' fill='#3b82f6' opacity='0.12'/><rect x='16' y='16' width='8' height='8' rx='2' fill='#3b82f6'/></svg>`,
+            TrafegoPago: `<svg width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='#3b82f6' opacity='0.12'/><path d='M12 28l8-16 8 16z' fill='#3b82f6'/></svg>`,
+            SeguroAmigo: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='12' fill='#3b82f6' opacity='0.12'/><circle cx='20' cy='20' r='8' fill='#3b82f6'/></svg>`,
+            AI: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='8' fill='#3b82f6' opacity='0.12'/><rect x='16' y='16' width='8' height='8' rx='2' fill='#3b82f6'/></svg>`,
+            ManutencaoSite: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='14' y='14' width='12' height='12' rx='3' fill='#3b82f6'/></svg>`,
+            GestaoRedeSocial: `<svg width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='#3b82f6' opacity='0.12'/><circle cx='20' cy='20' r='10' fill='#3b82f6'/></svg>`,
+            Contabilidade: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='14' y='14' width='12' height='12' rx='3' fill='#3b82f6'/></svg>`,
+            Estoque: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='14' y='14' width='12' height='12' rx='3' fill='#3b82f6'/></svg>`,
+            FolhaPagamento: `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='14' y='14' width='12' height='12' rx='3' fill='#3b82f6'/></svg>`,
+            'NFS-e': `<svg width='40' height='40' viewBox='0 0 40 40'><rect x='8' y='8' width='24' height='24' rx='6' fill='#3b82f6' opacity='0.12'/><rect x='14' y='14' width='12' height='12' rx='3' fill='#3b82f6'/></svg>`,
+            amigoOne: `<svg width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='#3b82f6' opacity='0.12'/><circle cx='20' cy='20' r='10' fill='#3b82f6'/></svg>`,
+            Premium: `<svg width='40' height='40' viewBox='0 0 40 40'><polygon points='20,8 32,32 8,32' fill='#3b82f6' opacity='0.12'/><polygon points='20,14 28,30 12,30' fill='#3b82f6'/></svg>`,
+            Global: `<svg width='40' height='40' viewBox='0 0 40 40'><circle cx='20' cy='20' r='18' fill='#3b82f6' opacity='0.12'/><circle cx='20' cy='20' r='10' fill='#3b82f6'/></svg>`
+        };
+        // Dados completos dos BattleCards
+        const battleCards = [
+            // === ERP ===
+            {
+                ambiente: "EcossistemaAmigo",
+                categoria: "erp",
+                produto: "EcossistemaAmigo",
+                titulo: "Ecossistema Amigo",
+                desc: "Ecossistema global que integra todos os produtos e ambientes Amigo, promovendo gestão unificada, interoperabilidade e experiência fluida.",
+                features: [
+                    "Integração total entre produtos e ambientes",
+                    "Gestão centralizada de dados e usuários",
+                    "Experiência omnichannel para clínicas e profissionais",
+                    "Escalabilidade e segurança de ponta",
+                    "Suporte a múltiplos perfis e jornadas"
+                ],
+                tags: ["Global", "Interoperabilidade", "Omnichannel", "Escalabilidade"],
+                scenarios: [
+                    "Clínicas que buscam centralizar operações em um único ecossistema.",
+                    "Empresas de saúde com múltiplas unidades e necessidade de integração.",
+                    "Profissionais que desejam escalar operações sem perder controle."
+                ],
+                differentials: [
+                    "Integração nativa entre todos os produtos Amigo.",
+                    "Gestão centralizada e visão 360º do negócio.",
+                    "Escalabilidade para crescer junto com o cliente."
+                ],
+                objections: [
+                    "Já uso vários sistemas separados, por que migrar?",
+                    "É seguro centralizar tudo em um só lugar?",
+                    "Como é feita a integração com sistemas legados?"
+                ],
+                guide: [
+                    "Destaque a facilidade de gestão e redução de retrabalho.",
+                    "Mostre cases de clientes que cresceram com o ecossistema.",
+                    "Reforce a segurança e compliance de dados.",
+                    "Ofereça demonstração personalizada para o cenário do cliente."
+                ]
+            },
+            {
+                ambiente: "amigoClinic",
+                categoria: "erp",
+                produto: "amigoClinic",
+                titulo: "Amigo Clinic (ERP Clínico)",
+                desc: "Ambiente ERP completo para clínicas médicas, com módulos integrados para gestão, atendimento, marketing, pagamentos e mais.",
+                features: [
+                    "Agenda médica inteligente e multiunidade",
+                    "Prontuário eletrônico integrado",
+                    "Gestão financeira e relatórios avançados",
+                    "Controle de estoque e compras",
+                    "Gestão de convênios e faturamento TISS",
+                    "Integração com pagamentos e NFS-e",
+                    "Gestão de equipe e permissões",
+                    "Automação de marketing e relacionamento"
+                ],
+                tags: ["ERP", "Clínicas", "Gestão", "TISS"],
+                scenarios: [
+                    "Clínicas que precisam de gestão integrada e compliance.",
+                    "Empresas que buscam automatizar processos e reduzir erros.",
+                    "Profissionais que querem centralizar informações do paciente."
+                ],
+                differentials: [
+                    "Módulos integrados e personalizáveis.",
+                    "Compliance com normas de saúde.",
+                    "Automação de processos e relatórios inteligentes."
+                ],
+                objections: [
+                    "Já tenho um sistema, por que trocar?",
+                    "É fácil migrar meus dados?",
+                    "O sistema é seguro e estável?"
+                ],
+                guide: [
+                    "Destaque a integração e automação.",
+                    "Mostre a facilidade de migração e suporte.",
+                    "Reforce a segurança e compliance.",
+                    "Ofereça um teste gratuito ou demonstração."
+                ]
+            },
+            // === CRM ===
+            {
+                ambiente: "amigoClinic",
+                categoria: "crm",
+                produto: "AmigoCare",
+                titulo: "Amigo Care (CRM Saúde)",
+                desc: "CRM dedicado para profissionais de saúde, focado em relacionamento, automação de marketing e vendas integradas (Twilio).",
+                features: [
+                    "Gestão de pacientes e leads",
+                    "Automação de campanhas e follow-ups",
+                    "Integração com WhatsApp/SMS (Twilio)",
+                    "Histórico completo de interações",
+                    "Relatórios de engajamento e conversão"
+                ],
+                tags: ["CRM", "Twilio", "Automação", "Relacionamento"],
+                scenarios: [
+                    "Clínicas que querem aumentar o engajamento de pacientes.",
+                    "Profissionais que desejam automatizar o relacionamento.",
+                    "Equipes de vendas que precisam de mais conversão."
+                ],
+                differentials: [
+                    "Automação de marketing integrada ao atendimento.",
+                    "Comunicação multicanal (WhatsApp, SMS, e-mail).",
+                    "Relatórios detalhados de engajamento."
+                ],
+                objections: [
+                    "Já uso outro CRM, por que mudar?",
+                    "É fácil importar meus contatos?",
+                    "O sistema é compatível com LGPD?"
+                ],
+                guide: [
+                    "Destaque a automação e integração com atendimento.",
+                    "Mostre a facilidade de importação de dados.",
+                    "Reforce a conformidade com LGPD.",
+                    "Ofereça um case de sucesso."
+                ]
+            },
+            // === PRIME ===
+            {
+                ambiente: "amigoClinic",
+                categoria: "erp",
+                produto: "Prime",
+                titulo: "Prime (Pacote Premium)",
+                desc: "Pacote de produtos vendidos em conjunto, com status Prime e benefícios exclusivos.",
+                features: [
+                    "Acesso a módulos avançados",
+                    "Suporte prioritário",
+                    "Condições comerciais diferenciadas",
+                    "Funcionalidades extras de gestão"
+                ],
+                tags: ["Premium", "Pacote", "Benefícios"],
+                scenarios: [
+                    "Clínicas que buscam diferenciação e exclusividade.",
+                    "Empresas que querem acesso a recursos avançados.",
+                    "Profissionais que valorizam suporte premium."
+                ],
+                differentials: [
+                    "Suporte prioritário e atendimento dedicado.",
+                    "Acesso antecipado a novidades.",
+                    "Condições comerciais exclusivas."
+                ],
+                objections: [
+                    "O que ganho a mais no Prime?",
+                    "Vale o investimento extra?",
+                    "Posso migrar para o Prime depois?"
+                ],
+                guide: [
+                    "Destaque os benefícios exclusivos.",
+                    "Mostre o ROI do pacote.",
+                    "Ofereça upgrade promocional.",
+                    "Apresente depoimentos de clientes Prime."
+                ]
+            },
+            // === CHATAMIGO ===
+            {
+                ambiente: "amigoClinic",
+                categoria: "erp",
+                produto: "ChatAmigo",
+                titulo: "ChatAmigo",
+                desc: "Chat interno para clínicas de maior porte, promovendo comunicação ágil e segura entre equipes.",
+                features: [
+                    "Chats em grupo e privados",
+                    "Histórico de mensagens",
+                    "Integração com agenda e prontuário",
+                    "Notificações em tempo real"
+                ],
+                tags: ["Comunicação", "Chat", "Interno"],
+                scenarios: [
+                    "Clínicas com equipes grandes e comunicação intensa.",
+                    "Ambientes que precisam de agilidade na troca de informações.",
+                    "Gestão de times multidisciplinares."
+                ],
+                differentials: [
+                    "Integração com agenda e prontuário.",
+                    "Segurança e privacidade das conversas.",
+                    "Notificações inteligentes."
+                ],
+                objections: [
+                    "Já uso WhatsApp, por que usar o ChatAmigo?",
+                    "É seguro para dados sensíveis?",
+                    "Funciona em dispositivos móveis?"
+                ],
+                guide: [
+                    "Destaque a segurança e integração.",
+                    "Mostre a produtividade do time.",
+                    "Ofereça demonstração em tempo real.",
+                    "Apresente diferenciais de privacidade."
+                ]
+            },
+            // === PAY ===
+            {
+                ambiente: "amigoClinic",
+                categoria: "pagamentos",
+                produto: "Pay",
+                titulo: "Pay (Dock Pagamentos)",
+                desc: "Solução completa de pagamento e adquirência para clínicas, gerenciada pela Dock Pagamentos.",
+                features: [
+                    "Cobrança recorrente e avulsa",
+                    "Gestão de recebíveis",
+                    "Integração com ERP e contabilidade",
+                    "Pagamentos instantâneos (Pix, cartão, boleto)",
+                    "Relatórios financeiros detalhados"
+                ],
+                tags: ["Pagamentos", "Dock", "Pix", "Financeiro"],
+                scenarios: [
+                    "Clínicas que querem automatizar cobranças.",
+                    "Empresas que buscam controle financeiro integrado.",
+                    "Profissionais que desejam flexibilidade de recebimento."
+                ],
+                differentials: [
+                    "Integração total com ERP e contabilidade.",
+                    "Pagamentos instantâneos e flexíveis.",
+                    "Relatórios detalhados e automação de cobranças."
+                ],
+                objections: [
+                    "Já uso outro gateway, por que mudar?",
+                    "É seguro para grandes volumes?",
+                    "Tem taxas competitivas?"
+                ],
+                guide: [
+                    "Destaque a integração e automação.",
+                    "Mostre a economia de tempo e taxas.",
+                    "Reforce a segurança e compliance.",
+                    "Ofereça simulação de recebíveis."
+                ]
+            },
+            // === SIGNBOX ===
+            {
+                ambiente: "amigoClinic",
+                categoria: "assinatura",
+                produto: "SignBox",
+                titulo: "SignBox (Assinatura Digital)",
+                desc: "Serviço de assinatura digital para documentos médicos, com validade jurídica e integração ao prontuário.",
+                features: [
+                    "Assinatura digital com validade legal",
+                    "Fluxo de assinatura integrado ao atendimento",
+                    "Armazenamento seguro de documentos",
+                    "Notificações automáticas de assinatura"
+                ],
+                tags: ["Assinatura Digital", "Legal", "Documentos"],
+                scenarios: [
+                    "Clínicas que precisam de agilidade em documentos.",
+                    "Profissionais que buscam segurança jurídica.",
+                    "Ambientes que querem eliminar papel."
+                ],
+                differentials: [
+                    "Validade jurídica garantida.",
+                    "Integração com prontuário e atendimento.",
+                    "Armazenamento seguro e compliance."
+                ],
+                objections: [
+                    "É aceito por órgãos reguladores?",
+                    "Como funciona a integração?",
+                    "É fácil para o paciente assinar?"
+                ],
+                guide: [
+                    "Destaque a validade legal.",
+                    "Mostre a facilidade de uso.",
+                    "Reforce a integração e segurança.",
+                    "Ofereça demonstração do fluxo."
+                ]
+            },
+            // === TRÁFEGO PAGO ===
+            {
+                ambiente: "amigoClinic",
+                categoria: "marketing",
+                produto: "TrafegoPago",
+                titulo: "Tráfego Pago (Marketing Médico)",
+                desc: "Serviço de marketing médico especializado em tráfego pago para captação de pacientes.",
+                features: [
+                    "Gestão de campanhas Google/Facebook",
+                    "Relatórios de ROI e performance",
+                    "Segmentação avançada de público",
+                    "Consultoria especializada em saúde"
+                ],
+                tags: ["Marketing", "Tráfego Pago", "ROI"],
+                scenarios: [
+                    "Clínicas que querem aumentar o fluxo de pacientes.",
+                    "Profissionais que buscam marketing digital eficiente.",
+                    "Empresas que querem mensurar resultados."
+                ],
+                differentials: [
+                    "Especialização em saúde.",
+                    "Relatórios detalhados de ROI.",
+                    "Segmentação avançada e consultoria."
+                ],
+                objections: [
+                    "Já faço anúncios, por que contratar?",
+                    "Qual o diferencial para saúde?",
+                    "Como é feito o acompanhamento?"
+                ],
+                guide: [
+                    "Destaque a especialização em saúde.",
+                    "Mostre cases de sucesso.",
+                    "Reforce o acompanhamento e relatórios.",
+                    "Ofereça diagnóstico gratuito."
+                ]
+            },
+            // === SEGURO AMIGO ===
+            {
+                ambiente: "amigoClinic",
+                categoria: "seguro",
+                produto: "SeguroAmigo",
+                titulo: "SeguroAmigo",
+                desc: "Seguro médico integrado que cobre o trabalho do profissional de saúde.",
+                features: [
+                    "Cobertura de responsabilidade profissional",
+                    "Gestão de apólices integrada ao ERP",
+                    "Assistência 24h para profissionais"
+                ],
+                tags: ["Seguro", "Cobertura", "Profissional"],
+                scenarios: [
+                    "Profissionais que buscam proteção jurídica.",
+                    "Clínicas que querem oferecer benefícios ao time.",
+                    "Ambientes que precisam de compliance."
+                ],
+                differentials: [
+                    "Cobertura exclusiva para saúde.",
+                    "Gestão integrada com ERP.",
+                    "Assistência 24h e suporte especializado."
+                ],
+                objections: [
+                    "Já tenho seguro, por que trocar?",
+                    "É aceito por conselhos de classe?",
+                    "Como funciona a assistência?"
+                ],
+                guide: [
+                    "Destaque a integração e cobertura.",
+                    "Mostre diferenciais para saúde.",
+                    "Reforce o suporte 24h.",
+                    "Ofereça simulação de apólice."
+                ]
+            },
+            // ... Repita para todos os outros produtos/serviços/temas ...
+            {
+                ambiente: "amigoClinic",
+                categoria: "ia",
+                produto: "AI",
+                titulo: "AI (Inteligência Artificial)",
+                desc: "Serviços integrados de IA com tier gratuito e pago, para automação e insights clínicos.",
+                features: [
+                    "Assistente virtual para clínicas",
+                    "Análise preditiva de agenda e faturamento",
+                    "Automação de tarefas repetitivas",
+                    "Geração de relatórios inteligentes"
+                ],
+                tags: ["IA", "Automação", "Insights"],
+                scenarios: [
+                    "Clínicas que querem automatizar processos.",
+                    "Profissionais que buscam insights de dados.",
+                    "Empresas que querem inovar no atendimento."
+                ],
+                differentials: [
+                    "IA treinada para saúde.",
+                    "Automação de tarefas clínicas.",
+                    "Relatórios inteligentes e preditivos."
+                ],
+                objections: [
+                    "É seguro usar IA em saúde?",
+                    "Como funciona a privacidade dos dados?",
+                    "Preciso de treinamento para usar?"
+                ],
+                guide: [
+                    "Destaque a automação e inteligência.",
+                    "Mostre a facilidade de uso.",
+                    "Reforce a privacidade e compliance.",
+                    "Ofereça demonstração prática."
+                ]
+            },
+            // ... (demais cards, até o último) ...
+            {
+                ambiente: "amigoClinic",
+                categoria: "telemedicina",
+                produto: "Telemedicina",
+                titulo: "Telemedicina Integrada",
+                desc: "Plataforma de telemedicina para consultas online, integração com prontuário e prescrição digital.",
+                features: [
+                    "Consultas por vídeo seguras",
+                    "Integração com prontuário eletrônico",
+                    "Prescrição digital e assinatura eletrônica",
+                    "Agendamento online e notificações"
+                ],
+                tags: ["Telemedicina", "Digital", "Consultas"],
+                scenarios: [
+                    "Clínicas que querem ampliar atendimento remoto.",
+                    "Profissionais que buscam flexibilidade de agenda.",
+                    "Empresas que querem reduzir absenteísmo."
+                ],
+                differentials: [
+                    "Integração total com ERP e prontuário.",
+                    "Segurança e conformidade com CFM.",
+                    "Experiência fluida para paciente e médico."
+                ],
+                objections: [
+                    "É seguro e aceito pelo CFM?",
+                    "Como funciona a prescrição digital?",
+                    "O paciente precisa instalar algo?"
+                ],
+                guide: [
+                    "Destaque a conformidade e segurança.",
+                    "Mostre a facilidade de uso.",
+                    "Reforce a integração com agenda e prontuário.",
+                    "Ofereça demonstração ao vivo."
+                ]
+            },
+            {
+                ambiente: "amigoClinic",
+                categoria: "analytics",
+                produto: "Analytics",
+                titulo: "Analytics & BI em Saúde",
+                desc: "Painéis e relatórios avançados para tomada de decisão baseada em dados em clínicas e consultórios.",
+                features: [
+                    "Dashboards customizáveis",
+                    "KPIs de saúde e gestão",
+                    "Relatórios financeiros e operacionais",
+                    "Exportação e integração com BI externo"
+                ],
+                tags: ["Analytics", "BI", "Dados"],
+                scenarios: [
+                    "Gestores que querem visão 360º do negócio.",
+                    "Clínicas que buscam decisões baseadas em dados.",
+                    "Empresas que querem monitorar performance em tempo real."
+                ],
+                differentials: [
+                    "Dashboards prontos para saúde.",
+                    "Integração com ERP e financeiro.",
+                    "Exportação fácil para BI externo."
+                ],
+                objections: [
+                    "Já uso planilhas, por que mudar?",
+                    "É difícil customizar os relatórios?",
+                    "Os dados são atualizados em tempo real?"
+                ],
+                guide: [
+                    "Destaque a automação e integração.",
+                    "Mostre exemplos de dashboards.",
+                    "Reforce a atualização em tempo real.",
+                    "Ofereça demonstração personalizada."
+                ]
+            },
+            {
+                ambiente: "amigoClinic",
+                categoria: "suporte",
+                produto: "SuportePremium",
+                titulo: "Suporte Premium 24/7",
+                desc: "Atendimento especializado e suporte técnico 24h para clínicas e profissionais.",
+                features: [
+                    "Atendimento multicanal (chat, telefone, e-mail)",
+                    "Equipe especializada em saúde",
+                    "Resolução rápida de chamados",
+                    "Base de conhecimento e autoatendimento"
+                ],
+                tags: ["Suporte", "24/7", "Especializado"],
+                scenarios: [
+                    "Clínicas que precisam de suporte ágil.",
+                    "Profissionais que trabalham fora do horário comercial.",
+                    "Empresas que valorizam atendimento humanizado."
+                ],
+                differentials: [
+                    "Equipe dedicada à saúde.",
+                    "Atendimento 24/7 real.",
+                    "Base de conhecimento completa."
+                ],
+                objections: [
+                    "O suporte é realmente 24h?",
+                    "Tem fila de espera?",
+                    "É cobrado à parte?"
+                ],
+                guide: [
+                    "Destaque a agilidade e especialização.",
+                    "Mostre depoimentos de clientes.",
+                    "Reforce a disponibilidade real.",
+                    "Ofereça contato direto para teste."
+                ]
+            },
+            {
+                ambiente: "amigoClinic",
+                categoria: "compliance",
+                produto: "ComplianceSaude",
+                titulo: "Compliance & LGPD em Saúde",
+                desc: "Soluções para garantir conformidade com LGPD, CFM e normas de saúde, protegendo dados e processos.",
+                features: [
+                    "Gestão de consentimento de pacientes",
+                    "Auditoria de acessos e logs",
+                    "Políticas de privacidade automatizadas",
+                    "Treinamento e certificação para equipes"
+                ],
+                tags: ["Compliance", "LGPD", "Segurança"],
+                scenarios: [
+                    "Clínicas que querem evitar multas e riscos.",
+                    "Empresas que buscam certificação em saúde.",
+                    "Profissionais preocupados com privacidade."
+                ],
+                differentials: [
+                    "Automação de consentimento e auditoria.",
+                    "Treinamento contínuo para equipes.",
+                    "Atualização constante com legislação."
+                ],
+                objections: [
+                    "Já tenho política de privacidade, por que investir?",
+                    "É difícil treinar a equipe?",
+                    "Como funciona a auditoria?"
+                ],
+                guide: [
+                    "Destaque a automação e atualização.",
+                    "Mostre exemplos de relatórios.",
+                    "Reforce a importância do compliance.",
+                    "Ofereça consultoria inicial gratuita."
+                ]
+            },
+            {
+                ambiente: "amigoClinic",
+                categoria: "customer-success",
+                produto: "CustomerSuccess",
+                titulo: "Customer Success em Saúde",
+                desc: "Equipe dedicada ao sucesso do cliente, acompanhamento de resultados e expansão de uso dos produtos.",
+                features: [
+                    "Onboarding personalizado",
+                    "Acompanhamento de métricas de sucesso",
+                    "Plano de expansão e engajamento",
+                    "Feedback contínuo e melhoria de produto"
+                ],
+                tags: ["Customer Success", "Onboarding", "Expansão"],
+                scenarios: [
+                    "Clínicas que querem garantir adoção total.",
+                    "Empresas que buscam expansão de uso.",
+                    "Profissionais que valorizam acompanhamento próximo."
+                ],
+                differentials: [
+                    "Equipe dedicada ao sucesso do cliente.",
+                    "Planos de expansão personalizados.",
+                    "Feedback direto para evolução do produto."
+                ],
+                objections: [
+                    "Já tenho suporte, por que preciso de CS?",
+                    "O acompanhamento é cobrado?",
+                    "Como funciona o onboarding?"
+                ],
+                guide: [
+                    "Destaque o acompanhamento proativo.",
+                    "Mostre resultados de expansão.",
+                    "Reforce o valor do onboarding.",
+                    "Ofereça contato direto com CS."
+                ]
+            },
+            {
+                ambiente: "amigoClinic",
+                categoria: "integracoes",
+                produto: "IntegracoesAPI",
+                titulo: "Integrações & API",
+                desc: "Plataforma aberta para integrações com outros sistemas, laboratórios, convênios e parceiros.",
+                features: [
+                    "API RESTful documentada",
+                    "Integração com laboratórios e convênios",
+                    "Webhooks e automações",
+                    "Marketplace de integrações prontas"
+                ],
+                tags: ["API", "Integrações", "Marketplace"],
+                scenarios: [
+                    "Clínicas que usam múltiplos sistemas.",
+                    "Empresas que querem automação de processos.",
+                    "Profissionais que buscam flexibilidade."
+                ],
+                differentials: [
+                    "API aberta e documentada.",
+                    "Marketplace de integrações.",
+                    "Webhooks para automação."
+                ],
+                objections: [
+                    "Preciso de TI para integrar?",
+                    "Tem custo extra?",
+                    "Quais sistemas já estão integrados?"
+                ],
+                guide: [
+                    "Destaque a flexibilidade e marketplace.",
+                    "Mostre exemplos de integrações.",
+                    "Reforce a facilidade de uso.",
+                    "Ofereça consultoria de integração."
+                ]
+            },
+            {
+                ambiente: "Global",
+                categoria: "educacao",
+                produto: "Academy",
+                titulo: "Academy & Educação Digital",
+                desc: "Plataforma de educação continuada, treinamentos e certificações para equipes de saúde.",
+                features: [
+                    "Cursos online e trilhas de aprendizagem",
+                    "Certificação digital",
+                    "Conteúdo atualizado por especialistas",
+                    "Relatórios de progresso e engajamento"
+                ],
+                tags: ["Educação", "Academy", "Treinamento"],
+                scenarios: [
+                    "Clínicas que querem treinar equipes.",
+                    "Empresas que buscam certificação.",
+                    "Profissionais que valorizam atualização contínua."
+                ],
+                differentials: [
+                    "Conteúdo exclusivo para saúde.",
+                    "Certificação reconhecida.",
+                    "Relatórios de progresso detalhados."
+                ],
+                objections: [
+                    "Já faço treinamentos presenciais, por que mudar?",
+                    "É reconhecido por órgãos de classe?",
+                    "Como acompanhar o progresso?"
+                ],
+                guide: [
+                    "Destaque a flexibilidade do digital.",
+                    "Mostre a certificação reconhecida.",
+                    "Reforce os relatórios de progresso.",
+                    "Ofereça acesso a um curso gratuito."
+                ]
+            },
+            {
+                ambiente: "amigoOne",
+                categoria: "erp",
+                produto: "amigoOne",
+                titulo: "Amigo One (Mobile)",
+                desc: "Ambiente mobile para clínicas recém-formadas, autônomos e anestesistas, com recursos essenciais e adicionais.",
+                features: [
+                    "Agenda e prontuário mobile",
+                    "Gestão de pacientes simplificada",
+                    "Integração com pagamentos",
+                    "Funcionalidades extras via Premium"
+                ],
+                tags: ["Mobile", "Autônomos", "Prontuário"],
+                scenarios: [
+                    "Profissionais autônomos que querem mobilidade.",
+                    "Clínicas pequenas que buscam praticidade.",
+                    "Empresas que querem integração mobile."
+                ],
+                differentials: [
+                    "Funcionalidades exclusivas para mobile.",
+                    "Integração com pagamentos e agenda.",
+                    "Gestão simplificada e intuitiva."
+                ],
+                objections: [
+                    "Já uso outro app, por que mudar?",
+                    "É seguro para dados sensíveis?",
+                    "Tem suporte para mobile?"
+                ],
+                guide: [
+                    "Destaque a mobilidade e integração.",
+                    "Mostre a facilidade de uso.",
+                    "Reforce a segurança e suporte.",
+                    "Ofereça demonstração mobile."
+                ]
+            },
+            {
+                ambiente: "amigoOne",
+                categoria: "erp",
+                produto: "Premium",
+                titulo: "Premium (Amigo One)",
+                desc: "Acesso a features extras como mais pacientes, IA e integrações avançadas.",
+                features: [
+                    "Limite ampliado de pacientes",
+                    "Acesso a IA e automações",
+                    "Funcionalidades exclusivas para mobile"
+                ],
+                tags: ["Premium", "Mobile", "IA"],
+                scenarios: [
+                    "Profissionais que querem escalar atendimento.",
+                    "Clínicas que buscam diferenciação.",
+                    "Empresas que querem recursos avançados."
+                ],
+                differentials: [
+                    "Acesso a IA e automações.",
+                    "Funcionalidades exclusivas para mobile.",
+                    "Limite ampliado de pacientes."
+                ],
+                objections: [
+                    "Vale o investimento extra?",
+                    "Posso migrar para o Premium depois?",
+                    "Quais as vantagens reais?"
+                ],
+                guide: [
+                    "Destaque os recursos exclusivos.",
+                    "Mostre o ROI do Premium.",
+                    "Ofereça upgrade promocional.",
+                    "Apresente depoimentos de clientes Premium."
+                ]
+            },
+            {
+                ambiente: "amigoOne",
+                categoria: "contabilidade",
+                produto: "Contabilidade",
+                titulo: "Contabilidade Automatizada (Amigo One)",
+                desc: "Contabilidade 100% integrada e automatizada para profissionais autônomos.",
+                features: [
+                    "Emissão automática de notas",
+                    "Gestão de impostos simplificada",
+                    "Relatórios contábeis mobile"
+                ],
+                tags: ["Contabilidade", "Automatização", "Mobile"],
+                scenarios: [
+                    "Profissionais autônomos que querem praticidade.",
+                    "Clínicas pequenas que buscam automação.",
+                    "Empresas que querem relatórios mobile."
+                ],
+                differentials: [
+                    "Automação total da contabilidade.",
+                    "Relatórios mobile e intuitivos.",
+                    "Gestão simplificada de impostos."
+                ],
+                objections: [
+                    "Já tenho contador, por que mudar?",
+                    "É fácil migrar minha contabilidade?",
+                    "O sistema é atualizado com a legislação?"
+                ],
+                guide: [
+                    "Destaque a automação e mobilidade.",
+                    "Mostre a facilidade de migração.",
+                    "Reforce os relatórios mobile.",
+                    "Ofereça demonstração do sistema."
+                ]
+            },
+            {
+                ambiente: "amigoOne",
+                categoria: "pagamentos",
+                produto: "Pay",
+                titulo: "Pay (Amigo One)",
+                desc: "Serviços de pagamento 100% automatizados e flexíveis para autônomos.",
+                features: [
+                    "Recebimento instantâneo",
+                    "Gestão de cobranças mobile",
+                    "Integração com agenda e pacientes"
+                ],
+                tags: ["Pagamentos", "Mobile", "Flexível"],
+                scenarios: [
+                    "Profissionais autônomos que querem flexibilidade.",
+                    "Clínicas pequenas que buscam automação de cobranças.",
+                    "Empresas que querem integração mobile."
+                ],
+                differentials: [
+                    "Recebimento instantâneo e flexível.",
+                    "Gestão mobile de cobranças.",
+                    "Integração com agenda e pacientes."
+                ],
+                objections: [
+                    "Já uso outro app, por que mudar?",
+                    "É seguro para grandes volumes?",
+                    "Tem taxas competitivas?"
+                ],
+                guide: [
+                    "Destaque a flexibilidade e automação.",
+                    "Mostre a economia de tempo e taxas.",
+                    "Reforce a integração mobile.",
+                    "Ofereça simulação de recebíveis."
+                ]
+            }
+        ];
+        function filterCards() {
+            const ambiente = document.getElementById('filter-ambiente').value;
+            const categoria = document.getElementById('filter-categoria').value;
+            const produto = document.getElementById('filter-produto').value;
+            const grid = document.getElementById('cardsGrid');
+            grid.innerHTML = '';
+            let count = 1;
+            battleCards.filter(card => {
+                return (!ambiente || card.ambiente === ambiente)
+                    && (!categoria || card.categoria === categoria)
+                    && (!produto || card.produto === produto);
+            }).forEach(card => {
+                const el = document.createElement('div');
+                el.className = 'battlecard';
+                el.tabIndex = 0;
+                el.setAttribute('role', 'button');
+                el.setAttribute('aria-label', `Abrir detalhes do BattleCard ${card.titulo}`);
+                el.onclick = () => openModal(card);
+                el.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') openModal(card); };
+                el.innerHTML = `
+                    <div class="card-enum">#${count++}</div>
+                    <div class="card-title">${card.titulo}</div>
+                    <div class="card-category">Categoria: ${card.categoria.toUpperCase()}</div>
+                    <div class="card-env">Ambiente: ${card.ambiente}</div>
+                    <div class="card-tags">
+                        ${(card.tags||[]).map(t => `<span class='tag'>${t}</span>`).join('')}
+                    </div>
+                    <div class="card-desc">${card.desc}</div>
+                    <ul class="card-features">
+                        ${card.features.map(f => `<li>${f}</li>`).join('')}
+                    </ul>
+                `;
+                grid.appendChild(el);
+            });
+            if (grid.innerHTML === '') {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:var(--muted); font-size:1.1rem;">Nenhum BattleCard encontrado para os filtros selecionados.</div>';
+            }
+        }
+        function openModal(card) {
+            document.getElementById('modalAvatar').innerHTML = avatars[card.produto] || avatars[card.ambiente] || avatars['Global'];
+            document.getElementById('modalTitle').textContent = card.titulo;
+            document.getElementById('modalCategory').textContent = 'Categoria: ' + card.categoria.toUpperCase();
+            document.getElementById('modalEnv').textContent = 'Ambiente: ' + card.ambiente;
+            document.getElementById('modalTags').innerHTML = (card.tags||[]).map(t => `<span class='tag'>${t}</span>`).join('');
+            document.getElementById('modalDesc').textContent = card.desc;
+            document.getElementById('modalFeatures').innerHTML = card.features.map(f => `<li>${f}</li>`).join('');
+            document.getElementById('modalScenarios').innerHTML = (card.scenarios||[]).map(s => `<li>${s}</li>`).join('');
+            document.getElementById('modalDifferentials').innerHTML = (card.differentials||[]).map(d => `<li>${d}</li>`).join('');
+            document.getElementById('modalObjections').innerHTML = (card.objections||[]).map(o => `<li>${o}</li>`).join('');
+            document.getElementById('modalGuide').innerHTML = (card.guide||[]).map(g => `<li>${g}</li>`).join('');
+            document.getElementById('modalBg').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal() {
+            document.getElementById('modalBg').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('modalBg')) closeModal();
+        };
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+        window.onload = filterCards;
+    </script>
+</body>
+</html> 
