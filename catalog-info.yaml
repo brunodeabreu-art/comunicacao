@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: comunicacao
+  description: AmigoTech Communication Platform - HTML-based communication system
+  annotations:
+    github.com/project-slug: brunodeabreu-art/comunicacao
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - communication
+    - html
+    - website
+    - amigotech
+  links:
+    - url: https://brunodeabreu-art.github.io/comunicacao/
+      title: Live Demo
+      icon: web
+    - url: https://github.com/brunodeabreu-art/comunicacao
+      title: Repository
+      icon: github
+spec:
+  type: website
+  lifecycle: production
+  owner: amigotech-dev
+  system: communication-platform
+  dependsOn:
+    - resource:github-pages
